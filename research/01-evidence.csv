@@ -1,0 +1,29 @@
+id,evidence_type,scope,claim,sources,limitation,test_ids
+C01,H,Projects,"Koordinator, trådar, delat minne och bibliotek beskrivs vid lanseringen.",S02,Historisk grundmodell; inte alla senare detaljer.,T04
+C02,D,Produktgräns,"Projects, agents, routines och molnmiljö har separata dokumentationsytor.",S01;S10,Överför inte en funktions kontrakt till en annan.,T01
+C03,O,Projects UI,MEMORY.md visas under nativ Auto memory.,O01,Bevisar inte en separat egen minnesmotor.,T03
+C04,D,Generell Claude Code,Maskinlokalt auto-memory dokumenteras separat från Projects delning.,S07;S02,Exakt Projects-lagring ännu inte läst i primär detaljkälla.,T03
+C05,U,Projects,Exakt automatisk kontra tillgänglig koordinatorinsyn är inte fastställd.,S03;G03,Ingen kategorisk begränsning till enbart sammanfattningar.,T04
+C06,D,Instruktioner,CLAUDE.md ger vägledning; permissions och hooks är andra kontrolltyper.,S07;S15,Prosa är inte exekverad behörighet.,T01;T06
+C07,D,Anthropic-hostad molnsession,Antal anslutna repos påverkar om repots settings-nycklar laddas.,S04,Självhostad miljö har andra regler.,T02
+C08,D,Molnsession,Datorns personliga inställningar överförs inte automatiskt.,S04,Ingen slutsats om faktiskt laddat material utan runtimeunderlag.,T01
+C09,D,Skills,"Skillbeskrivning, fullständigt innehåll och förinladdning är skilda lägen.",S08,Laddning bevisar inte korrekt tillämpning.,T01;T04
+C10,D,Molnskills,Repo- och kontokällor skiljer sig från datorns personliga skillmapp.,S08,Fungerande bibliotek ska inte rivas enbart på denna grund.,T01
+C11,D,Projects GitHub,Claude GitHub App krävs för repos som Projects-trådar klonar.,S06,ChatGPT-anslutningen är en annan integration.,T01
+C12,D,Molnprovisionering,"Setup, snapshot-cache och SessionStart har olika livscykel.",S05,Installation och körande tjänst är olika saker.,T07
+C13,D,Remote Control,Exekvering sker lokalt även när gränssnittet är på webben.,S11,Aktuell Projects-koppling ska kontrolleras separat.,T07
+C14,O,Inställningsbild,Goal och Project instructions är två olika synliga fält.,O01;O02,Tomt Goal bevisar inte avsaknad av instruktioner.,T04
+C15,O,Inställningsbild,Koordinator och trådar har separata visade effort-val.,O02,Visad standard bevisar inte historiskt effektivt värde.,T05
+C16,D,Generell effort,"Effort beror på explicit val, inställningar och modellens begränsningar.",S09,Ingen bevisad optimal nivå för Apex.,T05
+C17,D,Prompt-cache,Cache återanvänder bearbetad kontext och är inte projektminne.,S13,Kumulativ usage är inte ett enda kontextfönster.,T05
+C18,D,Behörighet,Plattforms-/serverkontroll är skild från egna backendinstruktioner.,S14,Ett stopp måste lokaliseras före ändring av V2.,T06
+C19,D,Hooks,"SessionStart, verktygshändelser och Stop har olika betydelser.",S16,Ett svarsslut är inte automatiskt ett uppnått verksamhetsmål.,T01;T04
+C20,D,Routines,"Obevakad rutin har egen prompt, resurser och anslutningar.",S12,Arv av ett visst Projects-minne har inte belagts.,T08
+C21,R,Projects/molnbehörighet,Användare rapporterar blockering trots uppfattat godkännande.,G01,Ej reproducerat; kommentarer från samma rapportör.,T06
+C22,R,Projects/lokal anslutning,Användare rapporterar datorbindning och proxy-/OAuth-problem.,G02,Andra kommentaren stöder endast del av problemet.,T06;T07
+C23,R,Projects Debug access,Användare beskriver olika räckvidd för olika läsverktyg.,G03,Ingen observerad åtkomst över kontogräns enligt rapportören.,T04
+C24,I,V3-leverans,Repo måste kompletteras med minsta nödvändiga driftunderlag.,S04;S05;O01;O02;O03,"Arkitekturrekommendation, inte en färdig implementation.",T01;T07
+C25,I,V3-val,Nativ grund är baslinje; minimal hybrid prövas för belagda luckor.,S02;S18,Extern motor är inte vald eller färdigutvärderad.,T03;T04
+C26,I,Granskningskvalitet,Krav på en viss formulering räcker inte som verifiering av verkligt arbete.,S18,Logisk analys; inte ett konstaterat V2-kodfel.,T04
+C27,U,Projects detaljer,"Minneslåsning, aktiv synk och exakt återstartssemantik är öppna.",S03,Ingen utlovad felfrihet eller egen påhittad TTL.,T03;T07
+C28,I,Kvalitetsprov,"Jämför kontrollerade uppgifter och faktiskt utfall, inte rapportlängd.",S18;S09,Proven är föreslagna och inte utförda.,T04;T05
