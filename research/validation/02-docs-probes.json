@@ -1,0 +1,153 @@
+{
+  "scope": "Local synthetic auditor contract probes only; NOT Claude Projects tests",
+  "python": "3.13.5",
+  "platform": "Linux",
+  "auditor_sha256": "889156ec7b22fa5f08b4f9e5b9a9c918c53b357b24c5aa9f322fdc7e97107622",
+  "parser_sha256": "148cc371d8143bd5070a9a5c5a1a7cc3e142acfad53c7dae4c4c5f9896ec0b20",
+  "count": 13,
+  "records": [
+    {
+      "id": "DG01",
+      "purpose": "Valid relative Markdown link",
+      "scope": "artifacts",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2713 All local Markdown links resolve\n  \u2713 No cross-document TEST-ID references found\n  \u2713 No possible orphan documents found under docs/\n\n\u2713 Deterministic audit passed. Review warnings manually, then continue to semantic audit.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG02",
+      "purpose": "Missing local target",
+      "scope": "artifacts",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2717 Broken Markdown link: 'README.md' -> 'missing.md'\n  \u2713 No cross-document TEST-ID references found\n  \u2713 No possible orphan documents found under docs/\n\n\u2717 Deterministic audit failed with 1 issue(s). Fix integrity errors before semantic review.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG03",
+      "purpose": "Existing target with nonexistent fragment",
+      "scope": "artifacts",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2713 All local Markdown links resolve\n  \u2713 No cross-document TEST-ID references found\n  \u2713 No possible orphan documents found under docs/\n\n\u2713 Deterministic audit passed. Review warnings manually, then continue to semantic audit.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG04",
+      "purpose": "Contradictory content with intact links",
+      "scope": "artifacts",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2713 All local Markdown links resolve\n  \u2713 No cross-document TEST-ID references found\n  \u2713 No possible orphan documents found under docs/\n\n\u2713 Deterministic audit passed. Review warnings manually, then continue to semantic audit.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG05",
+      "purpose": "No default governance artifacts",
+      "scope": "full",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[spine]\n  WARN: 'CLAUDE.md' is missing (constitution); this may be valid under progressive adoption\n  WARN: 'CLAUDE_MAP.md' is missing (map); this may be valid under progressive adoption\n  WARN: 'PROJECT_STATUS.md' is missing (status); this may be valid under progressive adoption\n  WARN: 'PROJECT_LOG.md' is missing (history); this may be valid under progressive adoption\n  WARN: 'AGENTS.md' is missing (agents); this may be valid under progressive adoption\n  \u2713 Referenced paths in spine and optional artifacts exist\n  WARN: No status artifact; skipping deletion-zone checks\n  WARN: No history artifact; skipping append-only integrity checks\n\n[context]\n  WARN: No context artifact; do not create an empty shell without stable domain language\n\n[adr]\n  WARN: No ADR directory exists; create ADRs lazily for real decisions\n\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2713 All local Markdown links resolve\n  \u2713 No cross-document TEST-ID references found\n  \u2713 No possible orphan documents found under docs/\n\n\u2713 Deterministic audit passed. Review warnings manually, then continue to semantic audit.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG06",
+      "purpose": "Explicit mapping to a missing artifact",
+      "scope": "context",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "  \u2717 Mapped documentation source does not exist: 'context' -> 'absent.md'\n  \u2713 Loaded custom documentation role mapping from .governance/docs-map.json\n\n[context]\n  WARN: No context artifact; do not create an empty shell without stable domain language\n\n\u2717 Deterministic audit failed with 1 issue(s). Fix integrity errors before semantic review.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG07",
+      "purpose": "Role path escapes repository",
+      "scope": "context",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "  \u2717 Documentation role mapping escapes the project root: 'context' -> '../outside.md'\n  \u2713 Loaded custom documentation role mapping from .governance/docs-map.json\n\n[context]\n  WARN: No context artifact; do not create an empty shell without stable domain language\n\n\u2717 Deterministic audit failed with 1 issue(s). Fix integrity errors before semantic review.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG08",
+      "purpose": "External URL not verified",
+      "scope": "artifacts",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2713 All local Markdown links resolve\n  \u2713 No cross-document TEST-ID references found\n  \u2713 No possible orphan documents found under docs/\n\n\u2713 Deterministic audit passed. Review warnings manually, then continue to semantic audit.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG09",
+      "purpose": "Undefined reference-style link",
+      "scope": "artifacts",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2713 All local Markdown links resolve\n  \u2713 No cross-document TEST-ID references found\n  \u2713 No possible orphan documents found under docs/\n\n\u2713 Deterministic audit passed. Review warnings manually, then continue to semantic audit.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG10",
+      "purpose": "Evidence ID resolves but no execution evidence",
+      "scope": "artifacts",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2713 All local Markdown links resolve\n  \u2713 All cross-document TEST-IDs resolve to the test registry\n  \u2713 No possible orphan documents found under docs/\n\n\u2713 Deterministic audit passed. Review warnings manually, then continue to semantic audit.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG11",
+      "purpose": "Orphan warning applies under docs/",
+      "scope": "artifacts",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2713 All local Markdown links resolve\n  \u2713 No cross-document TEST-ID references found\n  WARN: Possible orphan documents; review whether to link or archive: 'docs/unlinked.md'\n\n\u2713 Deterministic audit passed. Review warnings manually, then continue to semantic audit.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG12",
+      "purpose": "Unlinked research file outside docs/",
+      "scope": "artifacts",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2713 All local Markdown links resolve\n  \u2713 No cross-document TEST-ID references found\n  \u2713 No possible orphan documents found under docs/\n\n\u2713 Deterministic audit passed. Review warnings manually, then continue to semantic audit.\n",
+      "stderr": ""
+    },
+    {
+      "id": "DG13",
+      "purpose": "Symlink escapes repository",
+      "scope": "artifacts",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expectation_met": true,
+      "target_unchanged": true,
+      "stdout": "\n[artifacts]\n  WARN: 'CONTRACT.md' is missing (contract); this may be valid under progressive adoption\n  WARN: 'TESTS.md' is missing (tests); this may be valid under progressive adoption\n  WARN: 'REGRESSION.md' is missing (regression); this may be valid under progressive adoption\n  \u2717 Markdown source resolves outside the project root: 'outside.md'\n  \u2717 Broken Markdown link: 'README.md' -> 'outside.md'\n  \u2713 No cross-document TEST-ID references found\n  \u2713 No possible orphan documents found under docs/\n\n\u2717 Deterministic audit failed with 2 issue(s). Fix integrity errors before semantic review.\n",
+      "stderr": ""
+    }
+  ]
+}
