@@ -1,141 +1,183 @@
-# Pass 1 — verifiering, osäkerheter och överlämning
+# Validation register and audit handoff
 
-Datum: 2026-10-14. **Alla runtimeprov nedan är föreslagna, inte utförda.** Passet har läst källor och granskat resonemang, inte styrt användarens Claude Projects.
+Edition: 2026-10-15. Shared by passes 1 and 2. Existing IDs T01–T08 are retained; T09–T15 extend the coverage.
 
-## 1. Gemensamt provupplägg
+**Execution status: every test below is NOT RUN in this research stream.** Reading documentation, inspecting a manifest, and committing a report are not live Claude Projects tests.
 
-Använd ett separat testprojekt eller en återställbar kopia. Frys V2-baslinjen: commit, relevanta inställningar, datum, modell/effort och tillgängliga anslutningar. Kopiera inte hemligheter till provprotokoll. Förändra en faktor i taget. Ett prov är bara meningsfullt om det kan påverka ett verkligt beslut; detta är inte förslag på en permanent obligatorisk provsvit.
+## 1. Use tests to make decisions, not to create another bureaucracy
 
-För varje genomfört prov behövs: uppgift, förutsättningar, förväntat observerbart beteende, faktiskt resultat, bevislänk, avvikelse och vad som ska ändras eller fortsatt är okänt. Kontrollera faktisk artefakt eller operation, inte bara modellens sammanfattning. Det följer verifieringsprincipen i S18; scenarierna nedan är våra förslag.
+Run only a test that can change a concrete architecture decision. Start with an isolated test Project or reversible copy, a fixed repository revision, recorded relevant settings, and harmless data. Do not interrupt production threads, spend advertising money, send campaigns, alter live customer records, or publish private transcripts for these probes.
 
-## 2. Prioriterade prov
+A run record should contain the task and candidate configuration, date and runtime version where visible, coordinator/worker model and effective effort where obtainable, repository/ref and working directory, relevant tool/connection state, expected observable result, actual result, evidence location, and the decision affected. Keep secrets and hidden provider prompts out of the record.
 
-### T01 — vilken konfiguration når en tråd?
+Prefer actual artifacts, authoritative readback, and narrow observations. A model's self-report that it followed a rule is not enough. For creative work, artifact existence is objective but usefulness still needs business judgment; do not fabricate a universal automatic creativity score.
 
-**Beslut:** kan en viss backendkomponent överhuvudtaget användas i vald miljö?
+A small pilot is diagnostic, not a reliability estimate. When model variability matters, repeat equivalent tasks in alternate order and record all results, including failures. Do not quietly tune one candidate on the evaluation cases and compare it with an untuned baseline. Stop testing when the remaining uncertainty would not change the decision, or when a safety boundary prevents a valid probe. Report that boundary instead of bypassing it.
 
-Starta en ofarlig diagnostikuppgift i en Projects-molntråd. Registrera exekveringsmiljö, kodversion när den går att få, repo/ref och konfigurationskällor. Använd `/context`, `/status`, `/hooks`, `/skills` och `/mcp` bara där de faktiskt stöds. Annars använd motsvarande synliga metadata och verktygslogg; hitta inte på kommandostöd. Spara bara nödvändiga sammanfattningar, inga hemligheter eller dolda systemprompter.
+## 2. Original platform probes, clarified
 
-**Godkänt underlag:** det går att skilja en fil som finns från en fil som laddats. Därefter kan ett relevant beteendeprovet visa att instruktionen används. **Källa:** S15. **Status:** inte kört.
+### T01 — Effective configuration of a real work thread
 
-### T02 — en-repo kontra flera anslutna repos
+**Decisions:** AR-001, AR-006, AR-009. **Status:** NOT RUN.
 
-**Beslut:** får vi förlita oss på repo-hooks i det planerade arbetssättet?
+Start a harmless diagnostic task in a target Projects thread. Record whether it is hosted cloud, local, or Remote Control, the repository/ref, working directory, visible runtime version, and available configuration diagnostics. Use `/context`, `/status`, `/hooks`, `/skills`, or `/mcp` only if supported in that surface; otherwise use visible metadata and tool logs. Never invent successful command execution.
 
-I testmiljön, jämför annars lika sessioner med ett och två faktiskt anslutna repos. Använd en ofarlig hook som skriver en lokal markör; ingen spärr, publicering eller extern kontoskrivning. Dokumentera working directory och när hooken körs. Skilj anslutet repo från ett exempel som bara klonats som data. Bekräfta först plattformens dokumenterade begränsning S04/S05, inte en förväntan att markören måste finnas i båda fallen.
+Compare an existing file with evidence that it was loaded. A harmless, distinctive instruction in a test-only file can help observe behavior, but quoting that instruction back is weaker evidence than carrying out the corresponding task. Do not rely only on the assistant naming the file.
 
-**Godkänt underlag:** beteendet är begripligt och rätt kontroll placeras där den faktiskt fungerar. Att multirepo saknar markör kan vara det väntade resultatet, inte ett testfel. **Status:** inte kört.
+**Decision rule:** configure a component only where its loading path is established. If the necessary diagnostic is unavailable, retain that uncertainty and use a narrower task-level probe. Sources: S04, S05, S15.
 
-### T03 — minnesidentitet och korrigering mellan trådar
+### T02 — Single attached repository versus multiple attached repositories
 
-**Beslut:** behöver något komplettera det nativa minnet?
+**Decisions:** AR-001, AR-010. **Status:** NOT RUN.
 
-Spara en ofarlig provpreferens i testprojektets nativa minne. Be en ny tråd hämta den. Ändra preferensen med en uttrycklig korrigering och kontrollera en tredje tråd. Jämför vad en redan pågående tråd ser med vad en ny ser. Dokumentera vilken minnesyta som verkligen lästes eller skrevs, inte bara ordet ”minne”.
+Compare otherwise equivalent hosted sessions with one and two actually attached repositories. In the isolated fixture, use a harmless marker-producing hook rather than a blocking guard or an external write. Record the working directory, configuration source, matching event, and marker result. Distinguish attached repositories from a reference repository cloned as ordinary data.
 
-**Godkänt underlag:** källan kan identifieras, korrigeringen prioriteras eller fördröjningen förklaras. Om testet fallerar, lokalisera först lagring, indexering, återhämtning och tillämpning. Installera inte direkt en ny motor. **Källor:** S02/S07/O01 som bakgrund; Projects-detaljer U. **Status:** inte kört.
+**Decision rule:** a missing repo hook in the documented multi-repository case is an expected compatibility boundary, not automatically a malfunction. A critical control must have a supported execution path; failing this probe blocks reliance on that control, not necessarily all work in the environment. Sources: S04, S05.
 
-### T04 — uppdrag, överlämning och källkontroll
+### T03 — Memory identity and correction across threads
 
-**Beslut:** vilken minsta resultatstruktur behöver Tim?
+**Decisions:** AR-002, AR-003, AR-004. **Status:** NOT RUN.
 
-Ge koordinatorn en avgränsad fiktiv verksamhetsuppgift med två delar och ett känt beroende. Låt en del leverera ett dokument med en tydlig osäkerhet. Kontrollera om koordinatorn bevarar osäkerheten, hämtar relevant underlag och sammanför resultaten utan att säga mer än de stödjer. Använd inte nya kontrollagenter som förutsättning för provet.
+First establish which visible memory surface corresponds to which readable/writable store. Record the route, not sensitive memory contents. In a test Project, use a harmless invented preference unrelated to the business. Save it through the native route, retrieve it in a new thread, explicitly correct it, then compare a new thread with an already-running thread. Do not assume the running thread refreshes automatically.
 
-**Godkänt underlag:** koordinatorns sammanställning går att följa till rätt artefakt och återstående begränsning. Exakt tillgång till fulla trådhändelser registreras som observerat, inte antaget. **Bakgrund:** S02/G03. **Status:** inte kört.
+Where permitted, remove the test note and verify that a new thread does not retrieve it from another active store. If an old conversation still contains it, distinguish retained conversation history from reintroduced persistent memory.
 
-### T05 — två olika effort-flaskhalsar
+**Decision rule:** preserve native memory as the baseline if its actual behavior meets the need. A failed correction with a known path can justify a targeted lifecycle change. Failure to identify the store is not permission to delete all memory files. Source: S07 is a generic reference; native Projects behavior must be observed directly.
 
-**Beslut:** hjälper mer resonemang i samordningen, i arbetstråden eller inte alls?
+### T04 — Delegation preserves scope and evidence
 
-Håll material, modell och instruktioner konstanta. Jämför först koordinatorns två valda effort-nivåer med oförändrad trådeffort. Jämför därefter två nivåer i arbetstråden med koordinatorn oförändrad. Kontrollera effektiva inställningar för varje körning; en formulärstandard räcker inte.
+**Decisions:** AR-008, AR-017. **Status:** NOT RUN.
 
-Använd samma lilla uppgiftsfamilj: exempelvis kritisk dokumentgranskning och planering av ett kampanjutkast. Bedöm belagda fynd, missade krav, falska positiva, omarbete och resursåtgång. Upprepa lovande skillnader innan slutsats, eftersom en enda lyckad körning inte skiljer effekt från variation.
+Use a small representative review with a defined source set and one material uncertainty. Compare the original request, coordinator assignment, worker evidence, and final synthesis. Observe separately what Tim receives automatically, what he can fetch, what he actually reads, and what he verifies.
 
-**Godkänt underlag:** ett motiverat inställningsval, inte ett löfte att High alltid fungerar. **Källa:** S09 för inställningar; experimentdesignen är vårt förslag. **Status:** inte kört.
+**Decision rule:** a successful handoff preserves the requested coverage, important uncertainty, artifact/source references, and relevant action boundaries without requiring a transcript dump. If full evidence is accessible but ignored, test an assignment/return contract before adding a new transport or agent. If inaccessible, change the supported handoff path rather than assert that better wording grants access. Sources: S01–S03, S19, S21.
 
-### T06 — godkännande och blockerad extern handling
+### T05 — Coordinator and worker effort as separate interventions
 
-**Beslut:** var ligger kontrollen när ett arbete stoppas?
+**Decisions:** AR-015. **Status:** NOT RUN.
 
-Använd en uttryckligen tillåten, ofarlig åtgärd mot en sandbox eller testresurs. Registrera om stoppet kommer från egen hook, Claude-behörighet, nätverksproxy, anslutning eller mottagande API. Kontrollera om ett godkännande hör till rätt uppgift och rätt mottagande tråd. Försök inte kringgå en spärr och ändra inte säkerhetspolicy för att få ett grönt resultat.
+Keep model, source material, tools, instruction revision, and task as similar as possible. Change only coordinator effort for a coordination-heavy task; in a separate comparison change only worker effort for an analysis-heavy task. Record effective values where observable, not just menu defaults. Alternate run order and keep unsuccessful attempts.
 
-**Godkänt underlag:** orsaken kan förklaras och rätt felhanteringsväg väljas. Ett korrekt blockerat otillåtet försök är ett fungerande skydd. **Bakgrund:** S14/G01/G02. **Status:** inte kört.
+Measure source coverage, supported findings, unresolved uncertainty, unnecessary user intervention, elapsed work, and available usage metrics. For writing or creative tasks, separate factual correctness from subjective usefulness.
 
-### T07 — miljö efter ny start, resume och lokal frånkoppling
+**Decision rule:** choose effort by observed marginal usefulness, not an assumption that Low caused all failures or Max is always optimal. More compute does not resolve missing access. Exact calibration is a pass-3 concern. Sources: S09, S21.
 
-**Beslut:** vilket tillstånd måste V3 återställa?
+### T06 — Attribute a blocked operation to the correct layer
 
-Kontrollera ett litet nödvändigt verktyg och, om relevant, en testtjänst i ny molnsession respektive återupptagen session. Kontrollera separat vad som händer med en lokal uppgift när datorn blir otillgänglig. Använd testprojekt så inget kundarbete avbryts. Räkna inte en installerad binär som en körande tjänst.
+**Decisions:** AR-011. **Status:** NOT RUN.
 
-**Godkänt underlag:** tydlig skillnad mellan installation, process, sparad arbetsprodukt och session. **Bakgrund:** S05/S11. **Status:** inte kört.
+Use an approved, harmless action on a disposable target. Preserve the exact operation and target approval in the assignment. If blocked, identify whether the rejecting layer is a custom hook, client permission, hosted classifier, network proxy, missing authentication, or the target API. Record the actual error without secrets.
 
-### T08 — daglig rutin utan dubbla externa effekter
+**Decision rule:** choose the supported remedy for that layer. A correctly rejected unauthorized action is a successful safety result. Do not reword, reroute, or move to a less protected environment merely to defeat a denial. Sources: S14, S22; G01/G02 provide unverified incident leads.
 
-**Beslut:** behövs egen schemaläggning eller räcker plattformens rutin?
+### T07 — Fresh start, restored session, and local unavailability
 
-Börja med ett läsande uppdrag som producerar en rapport eller ett osänt utkast. Kontrollera vilken kontext och vilka anslutningar som är tillgängliga. Pröva separat återkörning av samma uppdrag. Före framtida publicering eller utskick behövs en mekanism som gör att ett avbrott/återförsök inte skapar dubbla externa handlingar.
+**Decisions:** AR-001, AR-013, AR-016. **Status:** NOT RUN.
 
-**Godkänt underlag:** rapporten återfinns, relevant tillstånd kan hämtas och körningen kan stoppas. Arv av Projects-minnet måste visas, inte antas. **Bakgrund:** S12. **Status:** inte kört.
+On isolated work, inspect a required executable and, only if relevant, a small service in a newly provisioned cloud session, a cached new session, and a resumed session. Separately observe the supported behavior when a local task's computer is unavailable. Do not assume these are equivalent lifecycle events.
 
-## 3. Kritisk prövning av de tre viktigaste rekommendationerna
+**Decision rule:** the migration plan must distinguish installed files, a ready process, a durable result, and recoverable task state. An installer success or a preserved filesystem alone does not prove service readiness. Source: S05/S11.
 
-### Rekommendation A: börja med nativ koordinering och minne
+### T08 — Routine context, completion, and duplicate avoidance
 
-**Starkaste motargument:** nativa funktioner kan ha luckor som kräver export, indexering eller mer explicit tillstånd. Ett litet externt lager kan vara enklare än upprepade manuella räddningar.
+**Decisions:** AR-005, AR-012. **Status:** NOT RUN.
 
-**Vad skulle ändra rekommendationen:** T03/T04 visar ett återkommande verksamhetsviktigt fel som inte kan hanteras med tillgängliga nativa funktioner, medan en kompatibel alternativlösning visar bättre utfall med rimligt underhåll.
+Start with a read-only report or an unsent draft using harmless input. Record the routine's repositories, environment, connectors, prompt, and actual access to required context. Check the output itself, not just the run status. Repeat the same logical job to observe whether it produces a clearly distinguishable duplicate, updates a previous draft, or recognizes completion.
 
-**Justering efter prövning:** nativt är en baslinje, inte en dogm. ”Ta bort allt eget minne” är inte godkänt som slutsats från pass 1.
+Before any future externally visible side effect, test recovery from an ambiguous result: the target may have accepted a request even when the caller did not receive confirmation. Use only a sandbox. Reconcile against the target's record or supported idempotency mechanism before retrying.
 
-### Rekommendation B: håll repo och driftinställningar tydligt separerade
+**Decision rule:** native scheduling is sufficient when the required inputs, output retrieval, stop control, and recovery behavior are established. Projects-memory inheritance remains unproven until observed. A green infrastructure status is not the acceptance criterion. Source: S12.
 
-**Starkaste motargument:** separationen kan skapa ytterligare dokument som snart blir inaktuella.
+## 3. Pass-2 decision probes
 
-**Vad skulle ändra lösningen:** en stödd export/import kan återställa hela relevanta konfigurationen och kontrolleras enklare än en manuell driftbeskrivning.
+### T09 — Instruction ownership and activation
 
-**Justering efter prövning:** skapa minsta nödvändiga återställningsunderlag, inte ett nytt administrationssystem. Verifiera att det faktiskt återskapar arbetsmiljön.
+**Decisions:** AR-003, AR-006. **Status:** NOT RUN.
 
-### Rekommendation C: verifiera laddning och resultat i stället för formuleringar
+Make two test-only instruction variants with equivalent useful meaning: one broadly loaded and one deliberately activated only for its relevant task. Check imports and rule scoping against current documentation. Include a non-matching task to detect unwanted activation. Use valid frontmatter; test malformed configuration only in an isolated diagnostic fixture and never as a production trick.
 
-**Starkaste motargument:** full spårning av alla steg blir dyr och kan försämra kreativt arbete. Ett kort kvitto kan ändå vara en användbar orientering.
+Record what actually entered context and whether the task could find the required procedure. Do not call a split into `@` imports a context optimization unless the measured loading changed.
 
-**Vad skulle ändra lösningen:** ett lätt kvitto visar sig ge tillräcklig insyn för lågriskuppgifter. Då behövs inte djupa loggkrav där.
+**Decision rule:** choose the arrangement that preserves behavior and improves relevance without multiplying authoritative copies. A shorter root file with equal or greater loaded text is not evidence of lower context cost. Sources: S07, S19.
 
-**Justering efter prövning:** matcha bevisnivån med uppgiftens konsekvens och osäkerhet. Kräv starkare belägg för externa ändringar och omfattande granskningar än för en första idélista.
+### T10 — Concurrent memory updates and stale readers
 
-Denna prövning är utförd i samma researchkontext. Den är **inte** en genomförd fresh-context- eller cross-model-granskning. Den separata red-team-chatten får senare pröva rapporten utan att vi påstår att den redan gjort det.
+**Decisions:** AR-004, AR-005. **Status:** NOT RUN.
 
-## 4. Öppna frågor som verkligen påverkar arkitekturen
+In the same isolated Project, let two threads make disjoint harmless updates and inspect whether both survive. Then introduce an explicit correction to one test fact while another thread still has an older context. Observe synchronization, overwrite behavior, and the answer to a question depending on the corrected fact. Do not infer guarantees from one successful interleaving.
 
-| Fråga | Varför den behövs | Vem/underlag som kan besvara den |
-|---|---|---|
-| Vilka minnesvägar används faktiskt? | Skiljer nativt minne från egna kopior och kontroller | V2-filgranskning plus T03 |
-| Vad kan koordinatorn läsa och vad läser den normalt? | Avgör nödvändig överlämningsstruktur | Aktuell Projects-dokumentation/verktygsmetadata och T04 |
-| Är minneskorrigering synlig direkt i pågående trådar? | Avgör risk för gammal kontext | T03 |
-| Vilka inställningar ärvs av nya respektive gamla trådar? | Avgör migration och effort-prov | T01/T05 samt fullständig Projects-konfiguration |
-| Hur fungerar lokala trådar med kontots säkerhetsinställningar? | Avgör realistisk verktygsåtkomst | T06/T07; inte enbart incidentrapporter |
-| Är en rutin kopplad till samma Project/minne? | Avgör dagliga arbetsflödens kontinuitet | T08 och officiell aktuell källa |
-| Vad händer efter avbrott, kvotåterställning eller koordinatorrestart? | Avgör risken för förlorat eller dubblerat arbete | Små prov i separat projekt |
-| Vilka målsystem erbjuder redan läs-/utkastbehörigheter? | Kan minska behovet av egna kontroller | Separat granskning av anslutningsytan, utan att publicera hemligheter |
+**Decision rule:** prefer native conflict handling if adequate. If updates are lost, restrict the affected write path or serialize only that operation; do not immediately invent a full memory service. Time-sensitive business state should instead be re-read from its authoritative source. If the underlying store exposes no safe update operation, document that constraint. Native behavior is unknown until this probe.
 
-## 5. Överlämning till V2-granskningen
+### T11 — Skill discovery, invocation, and supporting files
 
-Leta inte bara efter filnamn. Följ vilka komponenter som läser och skriver minne, vilka inställningar som faktiskt når respektive miljö och vad en kontroll verifierar. Skilj ett konfigurationsfel från saknade beroenden, nekad åtkomst och plattformsbeteende. Ta inte tidigare merges eller passerade prover som bevis på förbättrad verksamhetskvalitet.
+**Decisions:** AR-009. **Status:** NOT RUN.
 
-Var särskilt uppmärksam på skillnaden mellan ett standardrepo i Project-inställningarna och repoanslutningar i en faktisk session. Testa konsekvensen innan viktiga spärrar förlitas på. Granska även om instruktioner som kräver korta svar av misstag har blivit krav på liten arbetsinsats.
+Select a small representative set of existing, owner-used skills: a plain instruction skill, one with a supporting reference/script, and a delegated use case when available. Confirm name/description discoverability, actual body loading, dependency reachability, and one observable task-specific behavior. Test in the real target cloud/local route rather than assume a laptop installation transfers.
 
-Den här rapporten ger hypoteser och plattformsgränser. Den kan inte avgöra vilka specifika V2-filer som ska tas bort, eftersom de inte innehållsgranskats i detta spår.
+Distinguish an explicit request to use a skill from automatic relevance detection. If an invocation fails before its body is supplied, record that failure rather than reporting the skill as used. Do not audit the whole library or rewrite unfinished business skills in this probe.
 
-## 6. Korrigeringar till tidigare antaganden i diskussionen
+**Decision rule:** repair a demonstrated loading/dependency fault with minimal packaging changes. Absence of full content in startup context is not itself a defect. Sources: S08, S19, S21.
 
-- Teamminnets namn betyder inte en separat minnesmotor.
-- Koordinatorns åtkomst får inte beskrivas som enbart sammanfattningar utan bättre stöd.
-- En hög cacheandel är inte ett långtidsminne och total tokens är inte aktuell kontextstorlek.
-- Ett tomt Goal betyder inte tomma Project instructions.
-- Full nätverksåtkomst betyder inte att alla integrationer är tillåtna eller autentiserade.
-- Exempeltext i setupfältet är inte bevis för ett sparat skript.
-- Lanseringens ”local coming soon” är historik, inte en aktuell begränsning.
-- En skrivande GitHub-integration här bevisar inte en annan integrations behörigheter i Claude Projects.
+### T12 — Hook contracts and bounded failure behavior
 
-## 7. Gräns för nästa pass
+**Decisions:** AR-010, AR-017. **Status:** NOT RUN.
 
-Pass 2 får nu jämföra nativt minne, minimal hybrid och externa alternativ; fördela information mellan Goal, Project instructions, `CLAUDE.md`, skills och minne; samt ta fram en skrivspecifikation. Det får inte förutsätta svar på de öppna runtimefrågorna. Varken nya permanent laddade kontrollfiler eller en ny `CLAUDE.md` skapas av pass 1.
+For a proposed necessary hook, test a matching event, a non-matching event, repeated delivery, handler failure, timeout, and overlapping handlers in an isolated fixture. Observe whether it blocks, allows, warns, or retries as intended for that event. Check working directory and tool-name matching. A Stop-based checker must be tested after an incomplete answer and after a legitimate answer with no further work.
+
+**Decision rule:** a protection whose failure mode is undefined is not certified. An advisory helper should not deadlock unrelated work. A safety control must not silently turn a missing checker into permission. Never assume sequential execution of separate matching handlers. Source: S16; P02/P04 show why external plugins can add overlap.
+
+### T13 — External memory or context tool pilot
+
+**Decisions:** AR-013, AR-014. **Status:** NOT RUN.
+
+Run only after a baseline failure establishes a need and the proposed installation route is supported. Pin the version and provider/storage configuration. Use isolated data; record which events are captured, where content goes, whether another new thread can retrieve it, and whether a correction/deletion propagates to all active retrieval paths. Check cold start, resumed process, and uninstall/rollback behavior.
+
+For history memory, compare relevant recall and stale-fact rejection. For output processing, compare original-source coverage and evidence quality at lower context cost. These are different goals and must not share a misleading single score. Include a counterexample where exact wording is necessary and a short retrieved snippet is insufficient.
+
+**Decision rule:** adoption requires a meaningful task improvement, an operable lifecycle, understood data handling, and acceptable maintenance. A successful installation, a doctor command, or a vendor percentage alone is insufficient. Sources: P01–P05, S05, S08, S20.
+
+### T14 — Comprehensive review without source-loss through compression
+
+**Decisions:** AR-007, AR-017. **Status:** NOT RUN.
+
+Choose a bounded review with an explicit source set. Compare direct scoped reading with a retrieval/offloading approach. Require a coverage record distinguishing fully read, partially read, and inaccessible material. Include information whose interpretation depends on surrounding paragraphs or interacting files, not just an isolated keyword.
+
+**Decision rule:** an optimizer is useful only if it preserves the evidence needed by the task. Counting files or summarizing search matches cannot stand in for a promised full content review. If a source cannot be read, the output must narrow its claim. No permanent synthetic benchmark suite is proposed. Source guidance: S23; the actual acceptance criteria are this research's proposal.
+
+### T15 — Clean-reader handoff and reversible migration
+
+**Decisions:** AR-016, AR-017. **Status:** NOT RUN.
+
+Give a fresh builder only the three version-pinned research/audit repositories and the separately authorized installation context. Ask it to identify the owner's goals, scope exclusions, candidate decisions, unresolved blockers, required external configuration, and evidence needed before migration. It should be able to do this without guessing the original conversation.
+
+For a later actual V3 candidate, preserve the V2 snapshot and verify a clean setup plus rollback using only the intended distribution and configuration guide. Re-read external state before resuming interrupted effects. A successful file extraction is not a successful migration.
+
+**Decision rule:** missing context should be repaired in the handoff or explicit runtime manifest, not hidden in another permanent instruction file. This research does not perform the fresh-reader test or authorize a production migration.
+
+## 4. Open contracts that affect implementation
+
+| ID | Unknown | Evidence needed | Decision consequence |
+|---|---|---|---|
+| Q01 | Exact native coordinator visibility and retrieval tools | Accessible current Projects specification and/or T04 metadata and behavior | Choose the smallest working evidence handoff, not an invented omniscient coordinator. |
+| Q02 | Native memory identity versus additional V2 stores | V2 read/write path trace and T03 | Blocks irreversible memory deletion or blind copying of all indexes. |
+| Q03 | Native synchronization, stale readers, and concurrent updates | T03/T10 in target environment | Determines whether a narrow reconciliation/write policy is needed. |
+| Q04 | Effective account/connector/hosted permissions | Actual configuration inventory and T06 | Blocks externally visible automation until supported authority is established. |
+| Q05 | Routine context and duplicate-effect handling | T08 and target-system behavior | Determines whether a routine prompt suffices or a small transaction helper is justified. |
+| Q06 | External plugin availability and persistence in the selected cloud route | T01/T07/T11/T13 | Blocks production reliance on a local-only installation assumption. |
+| Q07 | Which changes reach existing versus new threads | T01/T05/T07 and current UI/runtime documentation | Determines restart and migration procedure; does not justify random restarts. |
+| Q08 | Which V2 components currently prevent real failures | Separate audit/Red Team evidence at exact revisions | Prevents removal based solely on aesthetics or file age. |
+| Q09 | External memory provider retention, export, deletion, and distributed-store semantics | Selected provider's current docs plus isolated tests | Blocks sensitive-data ingestion and cross-thread guarantees until resolved. |
+
+Not every unknown blocks useful work. Read-only research can proceed with explicit limitations. Irreversible deletion, public posting, customer actions, and reliance on an unverified enforcement layer require stronger evidence.
+
+## 5. Instructions for the other audit streams
+
+Trace actual V2 read/write/loading paths before assigning a cause. A custom filename may refer to a native memory surface. A guard may be correctly implemented but absent in a particular environment. A skill may be discoverable but fail to invoke. A report may preserve evidence that its final summary omitted.
+
+For each proposed removal, identify the behavior it currently provides, the evidence that the behavior matters, its native replacement if any, and the failure that the removal could reintroduce. A legacy protection does not become necessary simply because it exists; lack of an observed incident does not prove a safety boundary has no value.
+
+For each claimed improvement, identify an observable outcome beyond fewer files, shorter text, or a passed format check. Do not present the owner's dissatisfaction as proof of a particular implementation bug. Do not present the old system's self-approval as proof that the bug is absent.
+
+## 6. Self-critique boundary
+
+The strongest counterarguments and disconfirming conditions are attached to the AR decision records in pass 2 rather than duplicated here. That critique was performed in the same research context. No independent panel, fresh-context reviewer, or cross-model validation was executed. The fourth chat should compare evidence across streams, not treat their agreement as an experimental replication.

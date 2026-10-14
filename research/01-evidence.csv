@@ -1,29 +1,43 @@
-id,evidence_type,scope,claim,sources,limitation,test_ids
-C01,H,Projects,"Koordinator, trådar, delat minne och bibliotek beskrivs vid lanseringen.",S02,Historisk grundmodell; inte alla senare detaljer.,T04
-C02,D,Produktgräns,"Projects, agents, routines och molnmiljö har separata dokumentationsytor.",S01;S10,Överför inte en funktions kontrakt till en annan.,T01
-C03,O,Projects UI,MEMORY.md visas under nativ Auto memory.,O01,Bevisar inte en separat egen minnesmotor.,T03
-C04,D,Generell Claude Code,Maskinlokalt auto-memory dokumenteras separat från Projects delning.,S07;S02,Exakt Projects-lagring ännu inte läst i primär detaljkälla.,T03
-C05,U,Projects,Exakt automatisk kontra tillgänglig koordinatorinsyn är inte fastställd.,S03;G03,Ingen kategorisk begränsning till enbart sammanfattningar.,T04
-C06,D,Instruktioner,CLAUDE.md ger vägledning; permissions och hooks är andra kontrolltyper.,S07;S15,Prosa är inte exekverad behörighet.,T01;T06
-C07,D,Anthropic-hostad molnsession,Antal anslutna repos påverkar om repots settings-nycklar laddas.,S04,Självhostad miljö har andra regler.,T02
-C08,D,Molnsession,Datorns personliga inställningar överförs inte automatiskt.,S04,Ingen slutsats om faktiskt laddat material utan runtimeunderlag.,T01
-C09,D,Skills,"Skillbeskrivning, fullständigt innehåll och förinladdning är skilda lägen.",S08,Laddning bevisar inte korrekt tillämpning.,T01;T04
-C10,D,Molnskills,Repo- och kontokällor skiljer sig från datorns personliga skillmapp.,S08,Fungerande bibliotek ska inte rivas enbart på denna grund.,T01
-C11,D,Projects GitHub,Claude GitHub App krävs för repos som Projects-trådar klonar.,S06,ChatGPT-anslutningen är en annan integration.,T01
-C12,D,Molnprovisionering,"Setup, snapshot-cache och SessionStart har olika livscykel.",S05,Installation och körande tjänst är olika saker.,T07
-C13,D,Remote Control,Exekvering sker lokalt även när gränssnittet är på webben.,S11,Aktuell Projects-koppling ska kontrolleras separat.,T07
-C14,O,Inställningsbild,Goal och Project instructions är två olika synliga fält.,O01;O02,Tomt Goal bevisar inte avsaknad av instruktioner.,T04
-C15,O,Inställningsbild,Koordinator och trådar har separata visade effort-val.,O02,Visad standard bevisar inte historiskt effektivt värde.,T05
-C16,D,Generell effort,"Effort beror på explicit val, inställningar och modellens begränsningar.",S09,Ingen bevisad optimal nivå för Apex.,T05
-C17,D,Prompt-cache,Cache återanvänder bearbetad kontext och är inte projektminne.,S13,Kumulativ usage är inte ett enda kontextfönster.,T05
-C18,D,Behörighet,Plattforms-/serverkontroll är skild från egna backendinstruktioner.,S14,Ett stopp måste lokaliseras före ändring av V2.,T06
-C19,D,Hooks,"SessionStart, verktygshändelser och Stop har olika betydelser.",S16,Ett svarsslut är inte automatiskt ett uppnått verksamhetsmål.,T01;T04
-C20,D,Routines,"Obevakad rutin har egen prompt, resurser och anslutningar.",S12,Arv av ett visst Projects-minne har inte belagts.,T08
-C21,R,Projects/molnbehörighet,Användare rapporterar blockering trots uppfattat godkännande.,G01,Ej reproducerat; kommentarer från samma rapportör.,T06
-C22,R,Projects/lokal anslutning,Användare rapporterar datorbindning och proxy-/OAuth-problem.,G02,Andra kommentaren stöder endast del av problemet.,T06;T07
-C23,R,Projects Debug access,Användare beskriver olika räckvidd för olika läsverktyg.,G03,Ingen observerad åtkomst över kontogräns enligt rapportören.,T04
-C24,I,V3-leverans,Repo måste kompletteras med minsta nödvändiga driftunderlag.,S04;S05;O01;O02;O03,"Arkitekturrekommendation, inte en färdig implementation.",T01;T07
-C25,I,V3-val,Nativ grund är baslinje; minimal hybrid prövas för belagda luckor.,S02;S18,Extern motor är inte vald eller färdigutvärderad.,T03;T04
-C26,I,Granskningskvalitet,Krav på en viss formulering räcker inte som verifiering av verkligt arbete.,S18,Logisk analys; inte ett konstaterat V2-kodfel.,T04
-C27,U,Projects detaljer,"Minneslåsning, aktiv synk och exakt återstartssemantik är öppna.",S03,Ingen utlovad felfrihet eller egen påhittad TTL.,T03;T07
-C28,I,Kvalitetsprov,"Jämför kontrollerade uppgifter och faktiskt utfall, inte rapportlängd.",S18;S09,Proven är föreslagna och inte utförda.,T04;T05
+id,classification,claim,scope,sources,verification,status
+C01,DOCUMENTED PLATFORM BEHAVIOR,Native Projects coordination and shared context are described in official index and historical launch material,Projects with historical access limits,S01|S02,T04,DOCUMENTARY ONLY
+C02,DOCUMENTED PLATFORM BEHAVIOR,Projects and other agent mechanisms are distinct documented surfaces,Product boundaries,S01|S10|S19|S21,T01,DOCUMENTARY ONLY
+C03,VERIFIED TECHNICAL EVIDENCE,The team memory index is shown under native Auto memory,User screenshot only,O01,T03,UI OBSERVED ONLY
+C04,DOCUMENTED PLATFORM BEHAVIOR,Generic local auto-memory documentation is not a native Projects synchronization specification,Generic Claude Code versus Projects,S07|S02,T03,DOCUMENTARY ONLY
+C05,UNKNOWN / REQUIRES LIVE TEST,Exact automatic and retrievable coordinator visibility remains unresolved,Native Projects,S03|G03,T04,NOT RUN
+C06,DOCUMENTED PLATFORM BEHAVIOR,Instruction prose is guidance rather than a hard permission boundary,Claude Code,S07|S15,T01|T06,DOCUMENTARY ONLY
+C07,DOCUMENTED PLATFORM BEHAVIOR,Multiple attached repositories change which project settings are loaded,Anthropic-hosted cloud,S04|S05,T02,DOCUMENTARY ONLY
+C08,DOCUMENTED PLATFORM BEHAVIOR,Personal local settings do not automatically transfer to hosted sessions,Anthropic-hosted cloud,S04|S05,T01,DOCUMENTARY ONLY
+C09,DOCUMENTED PLATFORM BEHAVIOR,Skill listing and invocation differ from subagent preloading,Claude Code skills and subagents,S08|S19|S21,T11,DOCUMENTARY ONLY
+C10,DOCUMENTED PLATFORM BEHAVIOR,Cloud skill availability differs from a laptop personal skill directory,Cloud and account or repository routes,S08,T11,DOCUMENTARY ONLY
+C11,DOCUMENTED PLATFORM BEHAVIOR,Projects repository authentication has a documented GitHub App requirement,Pass-1 cloud source reading,S06,T01,DOCUMENTARY ONLY
+C12,DOCUMENTED PLATFORM BEHAVIOR,Setup snapshots and running processes have different lifecycles,Hosted cloud,S05,T07,DOCUMENTARY ONLY
+C13,DOCUMENTED PLATFORM BEHAVIOR,Remote Control execution depends on the local environment,Remote Control,S11,T07,DOCUMENTARY ONLY
+C14,VERIFIED TECHNICAL EVIDENCE,Goal and Project instructions appear as different fields,User screenshot only,O01|O02,T09,UI OBSERVED ONLY
+C15,VERIFIED TECHNICAL EVIDENCE,Coordinator and thread effort have separately displayed defaults,User screenshot only,O02,T05,UI OBSERVED ONLY
+C16,DOCUMENTED PLATFORM BEHAVIOR,Effort has configuration sources and model-dependent calibration,Claude Code configuration,S09|S21,T05,DOCUMENTARY ONLY
+C17,DOCUMENTED PLATFORM BEHAVIOR,Prompt caching is not durable factual memory,Claude Code caching,S13,T05,DOCUMENTARY ONLY
+C18,DOCUMENTED PLATFORM BEHAVIOR,Client and hosted action controls are not identical to prose instructions,Relevant permission surfaces,S14|S22,T06,DOCUMENTARY ONLY
+C19,DOCUMENTED PLATFORM BEHAVIOR,Hook events represent distinct lifecycle points,Claude Code hooks,S16,T12,DOCUMENTARY ONLY
+C20,DOCUMENTED PLATFORM BEHAVIOR,Routines have separate run configuration,Cloud routines,S12,T08,DOCUMENTARY ONLY
+C21,THIRD-PARTY EXPERIENCE,A reporter describes blocked approved work and approval propagation problems,External issue not reproduced,G01,T06,NOT REPRODUCED
+C22,THIRD-PARTY EXPERIENCE,A reporter describes device-linked cloud and OAuth restrictions,External issue not reproduced,G02,T06|T07,NOT REPRODUCED
+C23,THIRD-PARTY EXPERIENCE,A reporter describes unclear Debug access behavior within one account,External issue not reproduced,G03,T04,NOT REPRODUCED
+C24,RECOMMENDATION,A V3 release should identify required configuration outside the repository,Apex release design,S04|S05|O03,T01|T07|T15,CANDIDATE
+C25,RECOMMENDATION,Compare native-first with a justified minimal hybrid before adding an engine,Apex architecture,S02|S18|S23,T03|T04|T13,CANDIDATE
+C26,INFERENCE / HYPOTHESIS,A completion phrase can check presentation without proving task success,Proposed failure mechanism not a V2 finding,S12|S16,T04|T12,HYPOTHESIS
+C27,UNKNOWN / REQUIRES LIVE TEST,Native memory synchronization locking and restart behavior remain unresolved,Native Projects,S03,T03|T07|T10,NOT RUN
+C28,RECOMMENDATION,Judge improvements by task outcomes rather than response or file length,Apex evaluation,S18|S23,T04|T05|T14,CANDIDATE
+C29,DOCUMENTED PLATFORM BEHAVIOR,Imported instruction files can preserve startup loading rather than reduce it,Claude Code imports,S07,T09,DOCUMENTARY ONLY
+C30,DOCUMENTED PLATFORM BEHAVIOR,Path-scoped rules depend on valid scoping and matching file activity,Claude Code rules,S07,T09,DOCUMENTARY ONLY
+C31,DOCUMENTED PLATFORM BEHAVIOR,Deferred MCP loading changes the startup context cost model,Current documented MCP behavior,S20,T01,DOCUMENTARY ONLY
+C32,DOCUMENTED PLATFORM BEHAVIOR,The current skill-listing documentation describes a scaled description budget,Version-sensitive Claude Code listing,S08,T11,DOCUMENTARY ONLY
+C33,DOCUMENTED PLATFORM BEHAVIOR,A green routine status does not establish business-task success,Cloud routines,S12,T08,DOCUMENTARY ONLY
+C34,DOCUMENTED PLATFORM BEHAVIOR,Matching hook handlers run in parallel with event-specific semantics,Claude Code hooks,S16,T12,DOCUMENTARY ONLY
+C35,VERIFIED TECHNICAL EVIDENCE,The pinned claude-mem manifest declares multiple lifecycle and capture hooks,Static manifest at fef3402e,P02,T13,STATIC ONLY
+C36,VERIFIED TECHNICAL EVIDENCE,The pinned context-mode manifest declares routing and capture hooks,Static manifest at 655c67f9,P04,T13,STATIC ONLY
+C37,THIRD-PARTY EXPERIENCE,The claude-mem README describes multiple provider and installation choices,Maintainer documentation at fef3402e,P01,T13,NOT BENCHMARKED
+C38,UNKNOWN / REQUIRES LIVE TEST,End-to-end native Projects compatibility of either external candidate is unproved,Selected hosted and local routes,P01|P02|P03|P04|S05|S08,T13,NOT RUN
+C39,DOCUMENTED PLATFORM BEHAVIOR,Reasoning words in a prompt are not necessarily API effort configuration,Current model configuration,S09,T05,DOCUMENTARY ONLY
+C40,RECOMMENDATION,Retrieved material should remain evidence rather than become action authority,Apex trust-boundary design,S23|S14,T06|T14,CANDIDATE
+C41,UNKNOWN / REQUIRES LIVE TEST,External retention deletion and cross-thread recovery require selected-provider verification,Unselected provider and runtime,P01|P03,T13,NOT RUN
+C42,RECOMMENDATION,Use concrete task contracts without treating writing heuristics as platform guarantees,Apex instruction design,S07|S23|U01,T09|T15,CANDIDATE

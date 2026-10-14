@@ -1,222 +1,187 @@
-# Pass 1 — Claude Projects: verifierbar plattformskarta
+# Pass 1 — Claude Projects platform boundaries
 
-**Datum:** 2026-10-14. **Status:** levererad källstudie; ingen runtimecertifiering.
+Research edition: 2026-10-15. Replaces the Swedish edition delivered on 2026-10-14; the original remains in Git history at `ac598758dfba6eedc1be1d4ce9f02999fa376a9c`.
 
-**Uppdrag:** fastställa vad plattformen erbjuder och vilka gränser Apex V3 måste respektera. Detta spår granskar inte V2-repots filinnehåll, bedömer inte kvaliteten hos installerade skills och bygger inte V3.
+**Status: completed documentary platform study, supplemented during pass 2. Not a certification of any live Apex installation.**
 
-## 1. Slutsats för beslutsfattaren
+## 1. Read this without the original conversation
 
-Den bäst underbyggda startpunkten är **Projects inbyggda koordinering och delade minne, med ett litet, tydligt motiverat Apex-lager**. Det är en kandidat att pröva, inte ett bevis för att all befintlig backend ska bort. Plattformen erbjuder redan koordinering, medan dess dokumentation visar viktiga skillnader mellan körmiljöer och konfigurationskällor. [S01, S02, S04]
+Apex is an e-commerce operator's working environment, not a product for selling an agent framework. Its intended work includes store development, search optimization, advertising, email, customer operations, organic content, images, video, research, and recurring business tasks. The owner wants to concentrate on the business rather than maintain an AI backend.
 
-Tre beslut bör därför tas före en stor ombyggnad:
+Apex V2 runs in the Claude Code Projects experience with a native project coordinator, called Tim by the owner, and multiple work threads. The owner reports shallow reviews, unsupported completion claims, confusing restrictions, stale information, and growing administrative files. These are requirements and incident reports, not findings that this research has independently reproduced. Problems reportedly existed before usage became scarce. A low remaining quota must not be adopted as the default root cause.
 
-1. Skilj **nativ funktion**, **egen text i den funktionen** och **egen exekverande mekanism**. Ett index som heter `MEMORY.md` räcker inte för att avgöra vilken kategori något tillhör.
-2. Behandla V3 som **repo plus inställningar och externa anslutningar**, inte som en ZIP som ensam återställer allt.
-3. Kräv en spårbar kedja från konfiguration till faktiskt resultat. En deklarerad hook, tillgänglig skill eller godkänd rapport är inte i sig bevis på korrekt utfört arbete.
+This repository is the independent research stream. A second stream audits V2 files and a third challenges the system through Red Team analysis. A future fourth chat will compare all three repositories and decide what to build. This stream has not audited the V2 implementation, approved its recent merges, or inspected every installed business skill. Existing useful skills and reference repositories are migration assets, not presumed defects.
 
-Dessa är designrekommendationer från analysen, inte fynd om att V2:s kod innehåller ett visst fel.
+The decision is not simply whether to shorten `CLAUDE.md`. It is which responsibilities belong to the platform, which need configuration, and which justify additional software. A smaller system that repeatedly loses important work would not satisfy the goal. Neither would a larger system that mostly maintains itself.
 
-### Viktig källbegränsning
+## 2. Evidence vocabulary and reading contract
 
-Anthropics index länkar till `claude-projects`, men den detaljerade sidan gick inte att hämta med webbverktyget. Även Markdown-varianten misslyckades. Lanseringsartikeln kunde läsas i sökresultat från Anthropics egen domän. Angränsande officiella dokument har lästs i relevanta avsnitt. Därför är grundmodellen belagd, men exempelvis exakt koordinatoråtkomst, minnessynkronisering, låsning och inställningsarv fortfarande delvis öppna. [S01–S03]
+Use these labels literally when comparing this report with the other streams:
 
-Vi fyller inte dessa luckor med gamla AI-svar, tredjepartsspeglar eller antaganden om hur en agent borde fungera.
+- **DOCUMENTED PLATFORM BEHAVIOR:** a statement supported by the inspected official source for its stated product and environment. Documentation is not proof that every beta execution behaves that way.
+- **VERIFIED TECHNICAL EVIDENCE:** something directly inspected, such as a particular configuration artifact, source file, screenshot field, or publication commit. The verification scope must be named. Static inspection is not execution.
+- **THIRD-PARTY EXPERIENCE:** a reporter's experience or a maintainer's untested product claim. An issue hosted in Anthropic's repository is not automatically an Anthropic-confirmed defect.
+- **INFERENCE / HYPOTHESIS:** a proposed explanation or conclusion from the evidence, not an observed runtime fact.
+- **RECOMMENDATION:** a design choice proposed for evaluation, not a requirement already implemented.
+- **UNKNOWN / REQUIRES LIVE TEST:** a material fact unavailable from the inspected sources or requiring execution in the user's environment.
 
-## 2. Vad som är belagt, observerat respektive föreslaget
+Source identifiers resolve in [the shared source register](01-sources.md). Tests resolve in [the validation register](01-validation-and-handoff.md). Pass 2 supplies the implementation decision records; this document defines their platform boundaries.
 
-**D — dokumenterat:** stöds av läst officiell dokumentation för angiven miljö. **H — historiskt:** officiellt beskrivet vid ett tidigare datum. **O — observerat:** synligt i användarens skärmbild, inte körtestat. **R — rapporterat:** förstahandsuppgift från en extern användare. **I — slutsats/förslag:** vår analys. **U — okänt:** saknar tillräckligt underlag.
+### Critical retrieval limitation
 
-Dokumentation är ett beskrivet produktbeteende, inte bevis för att varje körning i betan följer det. En skärmbild visar ett ögonblick, inte hur gårdagens sessioner kördes. En GitHub-issue är inte en bekräftelse från Anthropic bara för att den ligger i deras repository.
+The official documentation index lists a dedicated Projects page, but direct retrieval of that page and its Markdown variant failed again in this research session. The failure is an access limitation, not evidence that the feature does not exist. The earlier official launch article was available through search-rendered text in pass 1, not as a fully fetched current specification. That historical evidence is retained with its limitation, not silently upgraded. [S01–S03]
 
-Se [evidensmatrisen](01-evidence.csv) för korta, avgränsade påståenden och [källregistret](01-sources.md) för åtkomst och läsomfattning.
+Consequently, exact native Project memory synchronization, coordinator tool visibility, thread inheritance, and restart semantics remain conditional. Generic CLI auto-memory documentation cannot fill those gaps. Ordinary Claude chat Projects help pages are also not substitutes for Claude Code Projects documentation.
 
-## 3. Produktgränser som måste hållas isär
+## 3. Product and responsibility boundaries
 
-Anthropics lansering beskriver en projektkoordinator som fördelar arbete till nya eller befintliga trådar. Molntrådar arbetar på egna repositorykopior och branches; överlapp kan ändå ge mergekonflikter. Trådar delar projektminne och kan använda underagenter. Ett projektbibliotek samlar material och producerade artefakter. [S02]
-
-Detta är inte samma sak som en lokal Claude Code-session, en underagent, Agent Teams eller en fristående rutin. Dokumentationen behandlar dessa som skilda funktioner. [S01, S10, S12]
-
-| Yta | Hur den används i denna analys | Vad vi inte antar |
+| Surface | What this study can establish | What must not be inferred |
 |---|---|---|
-| Projects-koordinator | Plattformens projektövergripande samordning | Att Apex måste bygga en ny dispatcher |
-| Projects-tråd | Arbetet som delegeras i projektet | Att hela huvudchattens historik automatiskt följer med |
-| Underagent i en session | Avgränsad delegation inom arbetet | Att den har samma minne och inställningar som projektkoordinatorn |
-| Agent Teams | Separat samarbetsfunktion | Att dess specifika regler gäller Projects |
-| Fristående molnsession | Referens för dokumenterat molnbeteende | Att alla projektinställningar automatiskt ärvs |
-| Remote Control | Gränssnitt till lokal exekvering | Att ett webbfönster betyder molnkörning |
-| Routine | Sparat automatiskt uppdrag | Att den automatiskt deltar i samma projektminne |
+| Claude Code Projects | A separately documented project experience; native coordination and shared context are described by its index/launch material and visible in the supplied UI. [S01, S02, O01–O03] | Exact hidden prompt order, complete coordinator access, or guaranteed successful coordination. |
+| A Projects work thread | The UI presents threads and separate defaults; cloud documentation constrains the hosted session environment. [O02, S05] | Every thread is equivalent to a CLI subagent or shares all state with every other thread. |
+| Claude Code subagents and Agent Teams | Distinct extension/execution mechanisms described in their own documentation. [S10, S19, S21] | Their memory and tool-inheritance rules automatically govern native Projects threads. |
+| Local or Remote Control execution | Execution can depend on the user's machine and its local configuration. [S11] | A cloud thread inherits the laptop's entire installed environment. |
+| Routines | Separately configured automated runs with their own execution context. [S12] | A routine automatically receives this Project's latest memory or approval. |
+| This research chat's GitHub connector | It can publish research commits when the write succeeds and is read back. | That Claude Projects has equivalent authentication, scopes, or permission behavior. |
 
-**Konsekvens:** varje framtida rekommendation ska ange var den gäller. En lösning som fungerar i en lokal terminal kan vara olämplig i Projects molntrådar utan att lösningen eller skillen i sig är dålig.
+**RECOMMENDATION:** treat a V3 release as repository content plus the minimum necessary runtime configuration and connection information. Do not create a parallel platform administration system merely to describe those boundaries. This recommendation is developed as AR-001 in pass 2.
 
-## 4. Koordinatorn: samordning är inte allvetande
+## 4. Platform fact cards
 
-Att behålla plattformens koordinator stämmer med användarens mål: verksamhetsarbete ska inte kräva manuell trådadministration. Men det behövs en skillnad mellan **att kunna återhämta information**, **att få den automatiskt**, **att faktiskt läsa den** och **att kontrollera att slutsatsen håller**.
+These cards centralize facts so later design records can discuss implications without repeatedly reproducing documentation.
 
-Den lästa primärinformationen fastställer inte exakt vilka verktyg koordinatorn alltid har för fullständiga trådhändelser. Ett tidigare påstående i vår diskussion om att koordinatorn bara kan se sammanfattningar var därför för kategoriskt. En aktuell användarrapport beskriver flera olika läsvägar med olika beteenden, men är inte ett verktygskontrakt för alla konton. [S02, G03]
+### PB-01 — Coordination is not omniscience
 
-**Rekommenderad princip:** en överlämning behöver peka på det användbara resultatet, dess underlag och det som återstår. Den ska inte återge varje arbetssteg. När något är viktigt eller motsägelsefullt ska koordinatorn kunna gå vidare till källan, i den mån tillgängliga verktyg medger det.
+**DOCUMENTED PLATFORM BEHAVIOR, limited/historical:** the official Projects index and launch description identify native coordination and parallel work. **VERIFIED TECHNICAL EVIDENCE, UI only:** the supplied settings distinguish coordinator and thread model/effort. [S01, S02, O02]
 
-För en SEO-granskning kan det vara rapport, undersökta sidors identiteter och tydliga kunskapsluckor. För en kodändring kan det vara exakt commit och testutfall. För en film kan det vara den faktiska exporterade filen och en kontroll av längd, ljud och format. Dessa är föreslagna leveranskrav, inte en ny obligatorisk agenthierarki.
+**UNKNOWN / REQUIRES LIVE TEST:** which thread events reach Tim automatically, which he can retrieve, what he actually retrieves, and which results he verifies. These are four different questions. An earlier statement that Tim can only see summaries was too categorical and is withdrawn.
 
-Vi ska inte kräva att Tim läser varje verktygsanrop från alla trådar. Det kan bli samma flaskhals i ny form. Däremot ska han inte förvandla en tråds självvärdering till ett starkare kvalitetslöfte.
+**INFERENCE / HYPOTHESIS:** an inadequate handoff can occur even when full source access exists. Conversely, a perfect instruction cannot grant an unavailable tool. Test T04 before choosing a new coordination layer.
 
-## 4a. Ett arbetsflöde utan påhittad intern körordning
+### PB-02 — Native Project memory and local auto-memory are not interchangeable
 
-Följande är en konceptuell karta för granskningen, inte en återgiven dold systemprompt eller garanterad laddningsordning:
+**VERIFIED TECHNICAL EVIDENCE, UI only:** the user's `MEMORY.md`, titled as team memory, appears under native Projects Auto memory with topic files. That establishes its presentation, not its storage path, correctness, or writer behavior. [O01]
 
-1. **Uppdrag och riktning.** Användaren ger en uppgift i projektet. Målet och tillgänglig projektkontext hjälper koordinatorn att avgränsa arbetet. [S02]
-2. **Samordning.** Koordinatorn väljer arbete för nya eller befintliga trådar. Vilken historik och vilka instruktioner som faktiskt når mottagaren behöver kontrolleras separat.
-3. **Körmiljö.** Trådens miljö avgör åtkomst till repo, beroenden, lokala verktyg och anslutningar. Samma synliga chattgränssnitt kan användas för olika exekveringsmiljöer. [S17]
-4. **Arbete och återkoppling.** Modellen använder verktygsresultat för nästa beslut. Det ger oss en plats att skilja en lyckad läsning från en blockerad operation eller en slutsats utan tillräcklig grund. [S17]
-5. **Resultat och fortsatt tillstånd.** Artefakten, verifieringsutfallet och öppna beroenden behöver nå rätt mottagare. Vad som ska återanvändas framöver hör inte automatiskt hemma i samma lager som hela körhistoriken.
+**DOCUMENTED PLATFORM BEHAVIOR, generic Claude Code:** local auto-memory is repository-scoped and machine-local; its index has a documented bounded startup load. Those storage and loading details are not a verified contract for native Projects memory. [S07]
 
-Steg 2 och 5 är särskilt viktiga provpunkter. Vi antar varken att delat minne är en fullständig kopia av varje konversation eller att en lyckad filskrivning betyder att koordinatorn redan har läst resultatet. En tydlig systemkarta behöver visa var detta är observerat och var det ännu bara är förväntat.
+**UNKNOWN / REQUIRES LIVE TEST:** whether V2 merely adds policies to native memory or also maintains a separate store; how updates reach already-running threads; conflict handling and export/restore behavior. T03 and the V2 audit must resolve these questions. Deleting a file because it is called a memory index is not justified.
 
-## 5. Minne: den viktigaste korrigeringen
+### PB-03 — Instruction prose and technical settings have different semantics
 
-Skärmbilderna visar `MEMORY.md` under Projects **Auto memory**. Den lokala benämningen ”teamminne” bevisar därmed inte att en fristående minnesmotor har byggts. Det kan vara plattformens minne med verksamhetsspecifikt innehåll och egna kompletterande regler. **Ingen borttagning kan motiveras enbart med filnamnet.** [O01]
+**DOCUMENTED PLATFORM BEHAVIOR:** discovered `CLAUDE.md` content is combined as guidance, not merged as deterministic settings overrides. Imports expand into context; splitting text into imported files alone does not reduce loading. Unscoped rules load broadly, while path-scoped rules depend on matching file activity. Technical settings have separate precedence and enforcement rules. [S07, S04]
 
-Den generella Claude Code-dokumentationen beskriver också ett `MEMORY.md`-index med ämnesfiler, men anger maskinlokal lagring för den mekanismen. Projects-lanseringen beskriver delning mellan projekttrådar. Dessa utsagor gäller olika ytor; det är fel att använda den ena för att förneka den andra. [S07, S02]
+**INFERENCE / HYPOTHESIS:** conflicting prose should be reconciled at its source, not left in multiple files with an invented promise that the preferred file always wins. A procedural guide for campaign writing is not necessarily a path-specific rule merely because it lives in a campaign folder. Pass 2 separates instruction ownership from activation.
 
-V2-granskningen behöver därför skilja på fyra möjliga saker:
+### PB-04 — Attached repository topology changes configuration loading
 
-- Nativ lagring och återhämtning som Projects tillhandahåller.
-- Egna instruktioner om vad Claude ska spara där.
-- Egna skript som läser, skriver, kontrollerar eller kopierar samma data.
-- Eventuella parallella kopior i repo, lokala sessioner eller andra minnesmotorer.
+**DOCUMENTED PLATFORM BEHAVIOR, Anthropic-hosted cloud:** single-repository sessions can load project settings. With multiple attached repositories, only specified plugin-related settings are read from the repositories; repo hooks, permissions, and environment entries are not applied the same way. Plugin declarations do not themselves install the plugins in the cloud. Personal/local settings do not automatically transfer. [S04, S05]
 
-Det avgörs genom sökvägar, läsare, skrivare och anropskedjor. En kontroll av döda länkar kan vara nyttig, men visar inte att sparade påståenden är sanna. Ett kort index kan fortfarande hänvisa till fel fakta. Ett långt index kan innehålla viktig information som ska flyttas, inte raderas.
+**VERIFIED TECHNICAL EVIDENCE, UI only:** one standard project repository was shown. A reference repository merely cloned into a directory is not thereby a second attached session repository. [O03]
 
-**Öppet:** exakt Projects-gräns för indexladdning, hur konkurrerande uppdateringar hanteras, när en ny uppgift når andra pågående trådar och vad som överlever projektbyte. Den generella gränsen 200 rader/25 KB får inte föras över till Projects utan stöd. [S03, S07]
+**RECOMMENDATION:** record actual session topology before relying on a hook. T01/T02 check loading and behavior; they do not assume that a missing hook in a documented multi-repo case is a product defect.
 
-**Pass 1-beslut:** inga externa minnesverktyg väljs och inget minne döms ut. Pass 2 jämför alternativen mot verkliga luckor, inte mot antalet stjärnor på GitHub.
+### PB-05 — Provisioning, stored files, and running services are different
 
-## 6. Instruktioner, inställningar och faktiskt laddat material
+**DOCUMENTED PLATFORM BEHAVIOR:** hosted environment setup and session-start hooks are different lifecycle mechanisms. Environment caching preserves a filesystem snapshot, not every process that setup started. A resumed or recreated session is not equivalent to a new installation. [S05]
 
-`CLAUDE.md` ger kontext och vägledning; den är inte en exekverad behörighetskontroll. Regler för JSON-inställningars företräde är inte samma sak som att två motsägelsefulla textinstruktioner säkert löses på önskat sätt. [S07, S15]
+**INFERENCE / HYPOTHESIS:** an external memory worker could be installed on disk yet unavailable when a new session needs it. Conversely, reinstalling every dependency at every turn can create unnecessary work. Select initialization behavior only after the actual deployment mode is known. T07 distinguishes installation, process readiness, durable state, and resume behavior.
 
-Den generella dokumentationen skiljer mellan startupmaterial och sådant som hämtas när det behövs. Skills laddar normalt beskrivningar först och innehåll när de används. Förinladdade skills hos underagenter är ett annat fall. [S08]
+### PB-06 — Skill availability is not skill application
 
-**Konsekvens för V3:** målet bör vara ett tydligt hem för varje informationstyp, inte bara färre tecken. Det går exempelvis att korta `CLAUDE.md` men återinjicera samma regler genom en hook och ett minnesindex. Då har man flyttat problemet, inte löst det.
+**DOCUMENTED PLATFORM BEHAVIOR:** cloud sessions can use repository and account-available skills, but they do not simply read the user's laptop skill folder. Skill listing, invocation, and body loading are separate mechanisms. Subagent preloading is a separate case. [S08, S19, S21]
 
-| Information | Kandidat till ansvar, att pröva i pass 2 |
+**RECOMMENDATION:** preserve working skills and their supporting files. Verify the route from availability to relevant application rather than make every business task print a ritual receipt. The V2 audit owns specific broken paths; this stream defines a small set of representative loading checks.
+
+### PB-07 — Connectivity, authorization, and successful execution are separate
+
+**DOCUMENTED PLATFORM BEHAVIOR:** environment networking, external authentication, client permission rules, and hosted approval behavior form distinct controls. A permissive network setting is not an authorization to send a campaign or alter an account. The cloud documentation also states a Projects-specific GitHub App requirement for repository access. [S05, S06, S14, S22]
+
+**RECOMMENDATION:** classify a blocked operation at the layer that rejected it. Do not weaken unrelated protections to make a diagnostic turn green. Preserve actionable error information so Tim can explain the actual boundary. T06 uses a harmless test resource, not real customer actions.
+
+### PB-08 — A run finishing is not proof of business completion
+
+**DOCUMENTED PLATFORM BEHAVIOR:** a routine's green status reports infrastructure success, not that its task succeeded. A Stop event means an assistant response ended, not that a whole business objective was accomplished. [S12, S16]
+
+**INFERENCE / HYPOTHESIS:** checking for a particular completion word can enforce presentation without checking the deliverable. That is a hypothesis to test against V2, not a finding about an unread guard script. A usable receipt should point to an actual result and name incomplete work when relevant.
+
+### PB-09 — Effort is a variable, not a diagnosis
+
+**VERIFIED TECHNICAL EVIDENCE, UI only:** the supplied snapshot showed coordinator effort Low and thread default Medium. It does not establish the effective value in past sessions. [O02]
+
+**DOCUMENTED PLATFORM BEHAVIOR:** effort has configuration sources and model-specific calibration. Explicit settings and overrides matter. [S09, S21]
+
+**RECOMMENDATION:** vary coordinator and worker effort separately on unchanged inputs. Do not change model, instructions, memory, and effort together and attribute an improvement to one of them. T05 records quality as well as usage and latency. Full operational calibration remains part of pass 3.
+
+### PB-10 — Context, cached computation, and stored memory are different resources
+
+**DOCUMENTED PLATFORM BEHAVIOR:** prompt caching reuses eligible processing; it is not a persistent factual knowledge store. [S13]
+
+**INFERENCE / HYPOTHESIS:** aggregate cached-token volume cannot be read as the size of one active context window or as a direct measure of wasted business work. The useful question is whether avoidable retrieval, repetition, or orchestration reduced the quality delivered per task. Current MCP deferred loading also invalidates simplistic fixed-token-per-tool estimates. [S20]
+
+### PB-11 — First-person incidents are test leads, not general diagnoses
+
+**THIRD-PARTY EXPERIENCE:** three pass-1 GitHub reports describe approval propagation problems, device-linked network/OAuth restrictions, and unclear Debug access behavior. They were read with their available comments in pass 1; they have not been reproduced here or freshly checked for resolution in this supplement. [G01–G03]
+
+The comment on the device issue supports a narrower trusted-device/Remote Control problem, not every causal claim in the original report. The Debug access report concerns projects within one account, not demonstrated cross-account access. Keep these limits when constructing tests or discussing security.
+
+## 5. A conceptual task path, not an invented internal prompt stack
+
+Use the following as an investigation model:
+
+`business request -> coordinator interpretation -> scoped work assignment -> thread environment and relevant context -> tool work -> result artifact and residual uncertainty -> coordinator synthesis`
+
+For each transition, ask whether the required information existed, was accessible, was selected, was interpreted correctly, and was reflected in the result. This is an analytical model proposed by this research, not a reconstruction of Anthropic's hidden execution order.
+
+For example, a source-backed SEO investigation might fail because the thread never received the site boundary, because pages were inaccessible, because it inspected only a navigation summary, or because the coordinator later omitted the material limitations. These failures require different changes. More global rules are not the default repair for all of them.
+
+The migration review should distinguish:
+
+| Failure hypothesis | Evidence that would support it | Evidence that would weaken it |
+|---|---|---|
+| Required context was absent | Missing attachment, unresolved reference, or unloaded instruction in the failing session | Complete source was accessible and demonstrably read before the relevant decision |
+| Context was stale | Old fact or superseded decision appears in the result with a traceable source | The correct current fact was used but reasoning still failed |
+| Tool execution failed | Actual denied request, unavailable tool, missing process, or API error | Successful authoritative readback of the intended effect |
+| Delegation lost the requirement | Parent request differs materially from assignment or returned scope | Thread had and followed the requirement but synthesis lost it |
+| Reasoning was inadequate | Correct inputs and successful tools but unsupported interpretation | An upstream access or specification failure explains the result |
+| Presentation created false certainty | Detailed work contains caveats absent from the final conclusion | The underlying investigation itself lacks coverage |
+
+This matrix is not a complete causal model and should not become a new mandatory per-message checklist in V3. Use it for recurring failures whose diagnosis changes an architectural decision.
+
+## 6. The baseline comparison that pass 2 must make
+
+Three candidate architectures remain viable:
+
+1. **Native-first:** use native coordination and available native memory with a compact business and repository brief. This is the cheapest baseline to test, not the presumed winner.
+2. **Minimal hybrid:** retain that baseline and add only an explicit artifact, workflow, or bounded control that closes a demonstrated gap.
+3. **External memory/context tooling:** add a separately operated component where its actual retrieval, persistence, or processing benefit outweighs deployment, privacy, and maintenance costs.
+
+Judge them by useful completion, correction persistence, source coverage, clarity of handoffs, recovery, operator effort, and controlled external effects. File count is a secondary diagnostic, not the objective function. A duplicate derived view can be legitimate when it has an explicit source and refresh policy; multiple competing authorities are a different problem.
+
+Do not treat a previous V2 merge or passing unit suite as evidence that it improved business outcomes. Do not treat failure to prove that improvement as proof that every changed component is harmful. The file audit and representative task evidence must settle those claims.
+
+## 7. Corrections and scope changes made explicit
+
+| Earlier formulation or risk | Corrected position |
 |---|---|
-| Varaktigt verksamhetsmål | Project Goal, utan att tolka det som obegränsat mandat |
-| Gemensamt arbetssätt | Project instructions med få tydliga principer |
-| Hur repositoryt fungerar | `CLAUDE.md` och relevanta lokala regler |
-| Uppgiftsspecifik metod | Befintlig skill, med sina hjälpfiler |
-| Föränderligt beslut eller preferens | Rätt nativ minnesyta med källa och aktualitet |
-| Aktuell arbetsprodukt och bevis | Rapport, fil, commit eller annat åtkomligt resultat |
-| Tvingande gräns för en extern handling | Verifierad behörighet eller avgränsad kontroll nära handlingen |
+| Team memory implies a custom memory engine | Its native UI location is known; storage identity and added mechanisms are not. |
+| Tim sees only summaries | Exact automatic and retrievable access remains unknown. |
+| One later instruction file overrides another | Instruction text is combined; deterministic settings precedence is a separate topic. |
+| Splitting/importing a large CLAUDE.md reduces startup context | Imports can preserve the same loaded text; activation must change to save context. |
+| A fixed estimate per MCP tool measures startup cost | Deferred loading changes what enters context; inspect the actual session. |
+| Low effort explains the longstanding quality problem | It is one controlled experimental factor among several. |
+| A screenshot of an empty Goal means no project instructions | Goal and Project instructions are distinct UI fields. |
+| Full networking means external writes are authorized | Network reachability, identity, tool policy, and user approval are different. |
+| Example setup text proves a saved script ran | The screenshot alone cannot establish that. |
+| A short summary means the underlying work was shallow | Examine source coverage and artifacts before diagnosing depth. |
+| A long or detailed response proves deep work | Length is not evidence either. |
+| Native-first requires deleting all custom state | It is a baseline and can lose to a justified minimal hybrid. |
 
-Detta är en ansvarsskiss, inte en föreskriven filstruktur. Vi skriver inte nya permanenta instruktioner innan den jämförts med V2-granskningen.
+These corrections supersede less precise wording in earlier chat messages. They do not assert new V2 defects.
 
-## 7. Molnkonfiguration: ett repo och flera repos beter sig olika
+## 8. What the fourth chat can decide from this study
 
-I Anthropic-hostade molnsessioner laddas delade repoinställningar vid ett repo. Med flera repos laddas inte repots hooks, permission-regler eller `env` på samma sätt; dokumentationen anger att bara två pluginrelaterade nycklar läses och att de deklarerade pluginen ändå inte installeras där. Lokala användarinställningar följer inte med. [S04]
+The fourth chat can use these boundaries to reject proposals that depend on impossible configuration transfer, invent instruction precedence, confuse memory identity, or certify outcomes from superficial completion signals. It can also identify exactly which uncertainties require a small live probe instead of a larger redesign.
 
-**Detta är ett högt prioriterat kompatibilitetsfynd, inte ett konstaterat V2-fel.** Skärmbilden visar ett valt standardrepo, men det fastställer inte vilka repos varje tidigare tråd hade anslutna. Att ha kopierat ett exempelrepo till en mapp är inte heller automatiskt samma sak som att lägga till det som sessionens projektrepo.
+It cannot use this study alone to authorize deleting specific V2 files, select all production permission rules, claim that native memory synchronizes correctly, or certify a memory plugin in Projects. Those decisions require the other audit streams and the indicated live observations.
 
-Här behöver den andra granskningschatten ställa en mycket konkret fråga: *Om en nödvändig kontroll ligger i `.claude/settings.json`, vilka sessionstyper kan då lämna den oladdad?*
-
-Tre lösningar får jämföras senare: behåll en enkel en-repo-arbetsväg; använd en dokumenterat tillämplig miljö- eller serverkonfiguration; eller placera en kritisk gräns vid målsystemet. Ingen av dessa ska väljas utan behovs- och konsekvensbedömning.
-
-En gren får inte få etiketten ”säker” enbart för att kontrollskript finns på disk. Samtidigt ska vi inte lägga till nya guard-skript för ett tillstånd som inte förekommer i arbetssättet.
-
-## 8. Miljön är en del av leveransen
-
-Molninställningar hanterar bland annat miljövariabler, nätverk, hemligheter och VM-provisionering separat från repot. Setup kan återanvändas från en filsystemssnapshot; körande processer ingår inte i en sådan snapshot. Setup och SessionStart har olika livscykler. [S05]
-
-Det ger två olika kontrollfrågor: *finns verktyget installerat?* och *kör tjänsten i denna session?* En installationskontroll svarar inte på båda.
-
-V3 bör därför kunna återställas med en liten driftbeskrivning: rätt repo/ref, nödvändiga miljöinställningar, aktiverade anslutningar och hur deras funktion kontrolleras. Beskrivningen ska inte innehålla faktiska hemligheter.
-
-**Egen rekommendation:** återkommande startarbete bör vara idempotent och ha ett mätbart syfte. Att installera samma paket om och om igen eller skapa nya sammanfattningar vid varje start kan ge kostnad utan nytta. Men en nödvändig misslyckad installation får inte döljas som lyckad med en generell felundertryckning.
-
-En observerad text i ett tomt formulär kan vara platshållartext. Skärmbildens setupfält räcker därför inte som belägg för att ett visst skript faktiskt är sparat. [O03]
-
-## 9. Lokal körning, åtkomst och externa verktyg
-
-Remote Control kör Claude på användarens dator; webben eller mobilen är gränssnitt till den processen. Datorns tillgänglighet är därför en del av den arbetsvägens tillförlitlighet. [S11]
-
-Skärmbilderna visar en lokal åtkomstfunktion, men inte vilka uppgifter som verkligen kördes lokalt. Lanseringsartikelns äldre formulering att lokala trådar kommer senare får inte användas som ett aktuellt förbud. [O03, S02]
-
-Molntrådarnas skills behöver nå rätt laddningskälla. Datorns personliga skillmapp läses inte automatiskt där; dokumenterade vägar är bland annat versionshanterade projektskills och kontosynkade skills. Det är inte ett skäl att riva ett fungerande bibliotek. [S08]
-
-Projects-trådar har dessutom ett uttryckligt krav på Claude GitHub App för repos de klonar. Detta får inte blandas ihop med att ChatGPTs GitHub-anslutning kan skriva i researchrepot. Det är två olika integrationer. [S06]
-
-**Föreslagen kontrollkedja:** tillgänglig → autentiserad → tillåten för uppgiften → faktiskt använd → resultat återläst. För en e-handelsintegration måste varje steg vara sant. ”Full network” är inte ett generellt godkännande att ändra kunddata eller publicera. Nätverk, anslutningsbehörighet och handlingskontroll är skilda frågor. [S05, S14]
-
-## 10. Effort, kontext och usage
-
-Skärmbilderna visar separata inställningar för koordinator och trådar. De säger inget säkert om historiska, effektiva inställningar eller om vilken faktor som orsakat ett dåligt resultat. [O02]
-
-Den generella modelldokumentationen beskriver effort som styrning av adaptivt resonemang och visar att explicita val, inställningar och gränser påverkar utfallet. Det följer inte att högsta nivån alltid ger bäst arbete per resurs. [S09]
-
-**Testhypotes, inte diagnos:** mer effort för koordinatorn kan hjälpa om svag uppdragsformulering eller bedömning är flaskhalsen. Mer effort i tråden kan hjälpa om själva analysen är flaskhalsen. Inget av detta hjälper säkert när ett underlag aldrig laddas eller ett verktyg blockeras.
-
-Prompt-cache återanvänder tidigare bearbetade prefix. Den är inte projektets långtidsminne. Sammanräknade cacheläsningar över många anrop är inte storleken på ett enda aktivt kontextfönster. [S13]
-
-**Konsekvens:** bedöm kvalitet, omarbete, relevanta fynd, körningar och resursmått tillsammans. Råa tokenantal från en sammanställning räcker inte för att beräkna bortkastad abonnemangskvot eller en exakt kostnad. Särskilt måste saknade sessioner och olika mätperioder hanteras innan jämförelser.
-
-Vi gör ingen ändring i V2:s modellval under denna research. Ett jämförbart experiment beskrivs i verifieringsbilagan.
-
-## 11. Automation: start, återupptagning och färdig är olika tillstånd
-
-Hook-dokumentationen skiljer bland annat på SessionStart, verktygshändelser och Stop. Ett Stop gäller att Claude avslutar ett svar, inte automatiskt att en verksamhetsuppgift har uppnått sitt mål. [S16]
-
-Därför behöver en eventuell kontroll svara på den riktiga frågan. Att kräva ordet ”Täckning” kan kontrollera rapportformatet; det bevisar inte att varje källa lästes. Att tillåta en viss formulering är inte samma sak som att verifiera en export eller en uppdatering. Detta är logisk analys av kontrolltypen, inte ett påstående om exakt hur V2 implementerat den.
-
-Officiella routines erbjuder schemalagda och händelsestyrda uppdrag i egna konfigurationer. De kör utan vanliga godkännandefrågor under passet; resurser och anslutningar måste därför avgränsas vid upplägget. Dokumentationen vi läst fastställer inte arv av ett visst Projects-minne. [S12]
-
-**För V3:** skilj rutin som tar fram ett utkast från rutin som publicerar eller ändrar något externt. Fortsättning efter kvotåterställning, omstart av koordinatorn och start av en ny rutin får inte beskrivas som samma mekanism. Skärmbilden visar kontroller för några av dessa, men deras fulla återstartssemantik behöver körprov. [O02]
-
-## 12. Externa incidenter: tre relevanta prövningar, inte tre bevisade rotorsaker
-
-| Rapport | Vad den tillför | Vad den inte bevisar |
-|---|---|---|
-| G01, issue 96775 | Förstahandsrapport om godkänt arbete som blockerats, inklusive överlämning via koordinator. De två kommentarerna är från samma rapportör. | Att alla godkännanden i nuvarande Projects misslyckas eller att Apex har samma fel. |
-| G02, issue 99688 | Reproduktionsbeskrivning om datorbindning, nätverksfel och OAuth. En annan användare bekräftar bara delen om trusted devices och lokal start. | Att hela rapportens förklaring är oberoende bekräftad eller att säkerhetsinställningar bör stängas av. |
-| G03, issue 102074 | Rapport om olika beteenden för olika läsverktyg och Debug access. | Att åtkomst över kontogränser finns; rapportören säger uttryckligen att detta inte observerats. |
-
-Alla tre var öppna vid kontrollen. Ingen läst kommentar gav en maintainerbekräftelse på hela den beskrivna mekanismen. Vi har inte reproducerat dem. [G01–G03]
-
-**Analys:** V2-granskningen behöver ha plattformsfel och åtkomstproblem som alternativa förklaringar. Det är lika fel att skylla allt på `.md`-filerna som att skylla allt på Anthropic. Reddit söktes, men inget tillräckligt relevant, direkt underlag användes i denna leverans. Vi fyller inte ut med allmänna intryck av vad ”communityt tycker”.
-
-## 13. Vad V3 kan utgå från — och vad som fortfarande ska avgöras
-
-**Robusta utgångspunkter:** använd den inbyggda koordinatorn; håll driftinställningar synliga; behåll fungerande specialistmaterial; kontrollera rätt körmiljö; bedöm minnesmekanismer efter verkliga läs- och skrivvägar; bedöm resultat med åtkomliga belägg.
-
-**Inte beslutade:** slutlig `CLAUDE.md`, hur många minnesfiler som behövs, externa minnesmotorer, exakta effort-standarder, vilka V2-hooks som tas bort eller hur rutiner kopplas till projektet. Att ange dessa nu skulle vara att bygga före granskningen.
-
-| Alternativ | Argument att pröva | Vad som kan fälla alternativet |
-|---|---|---|
-| Nativ grund med nästan inga egna mekanismer | Minst egen drift och duplicering | Nödvändig kontinuitet eller säker gräns kan inte uppnås |
-| Minimal hybrid | Små tillägg där mätbar lucka finns | Tilläggen duplicerar beteende eller kräver mer underhåll än de sparar |
-| Ny egen orkestrering/minnesmotor | Möjlig kontroll över särskilda behov | Extra tjänster och felvägar utan visad förbättring; faktisk Projects-kompatibilitet saknas |
-
-**Preliminärt val:** pröva första alternativet som referens och det andra som kandidat. Det tredje kräver konkret belägg för ett behov som de andra inte klarar. Detta följer uppdragets önskan om en enklare, mer kapabel grund — inte ett antagande att allt nativt fungerar felfritt.
-
-## 13a. Felsökningsmodell för ytligt arbete
-
-Ett kort svar är inte ensamt bevis för en ytlig undersökning. Omvänt kan en lång rapport innehålla lite faktiskt underlag. Därför föreslås följande differentiering innan backenden skrivs om:
-
-| Möjlig felväg | Vilket belägg skiljer den från alternativen? | Felaktig snabbåtgärd att undvika |
-|---|---|---|
-| Underlaget nådde aldrig rätt tråd | Tillgängliga filer, laddningskälla och faktisk läsning | Att bara kräva längre svar |
-| Verktyget eller behörigheten stoppade arbetet | Konkret nekande eller fel från rätt lager | Att skriva om minnet utan koppling till felet |
-| Uppdraget förlorade ett krav vid överlämning | Ursprungligt krav jämfört med mottagarens uppdrag och leverans | Att öka antalet granskare utan bättre underlag |
-| Analysen blev svag trots rätt åtkomst | Relevanta missade problem i ett kontrollerat arbetsprov | Att förklara allt med usage eller en standardetikett |
-| Bra undersökning sammanfattades missvisande | Skillnaden mellan artefaktens belägg och slutrapportens påståenden | Att behandla rapportformat som kvalitetskontroll |
-
-Detta är en hypotesmodell, inte fem konstaterade V2-fel. Låg kvarvarande usage väljs inte som huvudförklaring: användaren har beskrivit samma problem även tidigare. Orsak behöver fortfarande beläggas för varje situation.
-
-För pass 2 blir det mest värdefulla därför inte en universell uppmaning om att ”tänka djupare”, utan att minska de identifierade hindren mellan uppdrag, relevant kontext, verktyg och verifierad leverans.
-
-## 14. Vad som nu kan överlämnas
-
-Den separata V2-granskningen kan använda denna rapport för att kontrollera effektiva konfigurationskällor, minnesidentitet, miljöberoenden och alternativa felmekanismer. Den ska fortfarande styrka varje eget fynd med V2-filer eller körspår.
-
-Pass 2 kan nu jämföra informationsarkitektur och automationsalternativ utan att blanda ihop produkterna. Byggchatten får senare pröva våra rekommendationer tillsammans med båda granskningsrapporterna. **Ingen omröstning mellan tre AI-svar ersätter ett källbelägg eller ett reproducerbart prov.**
-
-De kvarvarande frågorna är namngivna och testbara i [verifiering och överlämning](01-validation-and-handoff.md). Att de är öppna hindrar inte att denna källstudie levereras, men de hindrar oss från att kalla en ännu obebyggd V3 verifierad.
+Read pass 2 next for stable recommendation IDs, alternative designs, and implementation consequences. All tests in the validation register remain **NOT RUN** until a separate execution record supplies evidence. The final cross-report Architecture Research Handoff is reserved for pass 3; this platform report is not that final handoff.
