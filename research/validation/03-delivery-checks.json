@@ -1,0 +1,193 @@
+{
+  "edition": "2026-10-15",
+  "scope": "Final research documents and decision index; not V2, native Projects, business effects or fresh-model comprehension.",
+  "python_version": "3.13.5",
+  "baseline_commit": "141002f54e2de684b237ca0ce8a2edcd248708ff",
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 research/validation/03-verify-delivery.py --root . --allow-baseline-metadata --self-test",
+  "exit_code": 0,
+  "syntax_parse": "PASS",
+  "reference_result": {
+    "mode": "explicit-baseline-metadata",
+    "result": {
+      "ok": true,
+      "errors": [],
+      "simple_local_links_checked": 60,
+      "baseline_metadata_targets": [
+        "research/01-evidence.csv",
+        "research/01-projects-architecture.md",
+        "research/01-sources.md",
+        "research/01-validation-and-handoff.md",
+        "research/02-evidence-and-validation.md",
+        "research/02-external-tools.md",
+        "research/02-information-architecture.md",
+        "research/validation/02-docs-probes.json"
+      ],
+      "scope": "Final-document reference and index integrity only; no semantic or runtime validation"
+    },
+    "negative_controls": [
+      {
+        "case": "duplicate_id",
+        "expected_ok": false,
+        "actual_ok": false,
+        "matched_expectation": true,
+        "errors": [
+          "Decision IDs must contain AR-001 through AR-018 exactly once",
+          "Invalid decision dependency: AR-001 -> AR-001",
+          "Unexpected canonical rationale: AR-001",
+          "Decision dependency cycle"
+        ]
+      },
+      {
+        "case": "dangling_link",
+        "expected_ok": false,
+        "actual_ok": false,
+        "matched_expectation": true,
+        "errors": [
+          "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: missing-final-evidence.md"
+        ]
+      },
+      {
+        "case": "unknown_test",
+        "expected_ok": false,
+        "actual_ok": false,
+        "matched_expectation": true,
+        "errors": [
+          "Unknown live-test ID: AR-001"
+        ]
+      },
+      {
+        "case": "bad_disposition",
+        "expected_ok": false,
+        "actual_ok": false,
+        "matched_expectation": true,
+        "errors": [
+          "Unknown disposition: AR-001"
+        ]
+      },
+      {
+        "case": "missing_section",
+        "expected_ok": false,
+        "actual_ok": false,
+        "matched_expectation": true,
+        "errors": [
+          "Missing handoff section: ## 1. Mission and owner requirements"
+        ]
+      },
+      {
+        "case": "dependency_cycle",
+        "expected_ok": false,
+        "actual_ok": false,
+        "matched_expectation": true,
+        "errors": [
+          "Decision dependency cycle"
+        ]
+      },
+      {
+        "case": "false_prose",
+        "expected_ok": true,
+        "actual_ok": true,
+        "matched_expectation": true,
+        "errors": []
+      }
+    ],
+    "negative_controls_all_matched": true
+  },
+  "strict_mode_on_partial_overlay": {
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "result": {
+      "ok": false,
+      "errors": [
+        "README.md: missing local target: research/02-information-architecture.md",
+        "README.md: missing local target: research/01-projects-architecture.md",
+        "README.md: missing local target: research/02-external-tools.md",
+        "README.md: missing local target: research/01-sources.md",
+        "README.md: missing local target: research/02-evidence-and-validation.md",
+        "README.md: missing local target: research/01-validation-and-handoff.md",
+        "README.md: missing local target: research/validation/02-docs-probes.json",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/01-projects-architecture.md",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-external-tools.md",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/01-sources.md",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-evidence-and-validation.md",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/01-validation-and-handoff.md",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-001",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-002",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-003",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-004",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-005",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-006",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-007",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-008",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-009",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-010",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-011",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-012",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-013",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-014",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-015",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-016",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-017",
+        "ARCHITECTURE-RESEARCH-HANDOFF.md: missing local target: research/02-information-architecture.md#ar-018",
+        "research/03-operating-model-and-release.md: missing local target: 02-information-architecture.md",
+        "research/03-operating-model-and-release.md: missing local target: 01-sources.md",
+        "research/03-operating-model-and-release.md: missing local target: 02-evidence-and-validation.md",
+        "research/03-operating-model-and-release.md: missing local target: 01-validation-and-handoff.md",
+        "research/03-challenge-and-resolution.md: missing local target: 02-information-architecture.md",
+        "research/03-sources-and-quality.md: missing local target: 01-sources.md",
+        "research/03-sources-and-quality.md: missing local target: 02-evidence-and-validation.md",
+        "research/03-sources-and-quality.md: missing local target: 01-evidence.csv"
+      ],
+      "simple_local_links_checked": 60,
+      "baseline_metadata_targets": [],
+      "scope": "Final-document reference and index integrity only; no semantic or runtime validation"
+    },
+    "meaning": "Missing historical local files are not silently accepted without the explicit metadata option."
+  },
+  "payload_files_excluding_this_record": {
+    "README.md": {
+      "bytes": 4172,
+      "sha256": "84ea0aa513b67a1554c66c774836902d03c1430012b4b268c17976ec73bbbe9c",
+      "git_blob_sha": "3e7267fcbe28ccbb62556628a870e58a1b4fe958"
+    },
+    "ARCHITECTURE-RESEARCH-HANDOFF.md": {
+      "bytes": 15909,
+      "sha256": "b4ed93d8fad4a0401f4ccc7ac9b3f8bb4d9ab7aef59853b09348eccdcee7ed7a",
+      "git_blob_sha": "4269dc8a37a0aefc863a9260d38e6a8603a0bf9c"
+    },
+    "research/03-decision-index.json": {
+      "bytes": 12736,
+      "sha256": "37c212ffcf5fe99975177b2bfe0858c64b8d866b523975e6d7314205e7125d88",
+      "git_blob_sha": "4ddd7994b8192aad113dd2bf2f2fc2f43b01a52f"
+    },
+    "research/03-challenge-and-resolution.md": {
+      "bytes": 13660,
+      "sha256": "ca6f3f903223bc70905d94bad1baa4b7fc744ac219b122fa9af228425ebc3552",
+      "git_blob_sha": "6386d993efd728d5af6c5214baa3e194ade1c71d"
+    },
+    "research/03-operating-model-and-release.md": {
+      "bytes": 29101,
+      "sha256": "904aba169b50746ef5a1f2133b48c4f9538a3ade7f9717f1963bdac4d0f15064",
+      "git_blob_sha": "a4696098f16c60b1f76231e0b064a76e3db8acca"
+    },
+    "research/03-sources-and-quality.md": {
+      "bytes": 14705,
+      "sha256": "3830485d9a5906d393a4799e43f5afaa520586f08e94e291dfa5c109a6ca1219",
+      "git_blob_sha": "8c99fc58228ab053972de9a77eb8d21e5101d008"
+    },
+    "research/validation/03-verify-delivery.py": {
+      "bytes": 9295,
+      "sha256": "53f2b012ad7670bade39de4c1c4d1b761f735097b23df13beb6a1596af303828",
+      "git_blob_sha": "68bd7cc34aa31cc8f672113defaabe560ca8d33b"
+    }
+  },
+  "non_claims": [
+    "No live T01-T15 test run",
+    "No historical DG checker rerun",
+    "No fresh-context reviewer",
+    "No complete local Git clone",
+    "No semantic proof from checker success"
+  ],
+  "record_self_hash": "Intentionally excluded to avoid a self-referential checksum."
+}

@@ -1,0 +1,418 @@
+{
+  "schema_version": "apex.research-decision-index.v1",
+  "edition": "2026-10-15",
+  "purpose": "Navigation and final research dispositions, not runtime configuration or production approval.",
+  "production_authorized": false,
+  "live_projects_tests": "NOT RUN",
+  "baseline_commit": "141002f54e2de684b237ca0ce8a2edcd248708ff",
+  "baseline_tree": "4b32d11ddf9f4ae6072b058147b2730b22dfade2",
+  "input_repositories": {
+    "research": {
+      "repository": "DavidLrson/apex-v3-reserach",
+      "revision": "Pin the commit containing this handoff"
+    },
+    "v2_audit": {
+      "repository": null,
+      "revision": null,
+      "status": "MISSING INPUT; obtain actual repository and examined V2 revision"
+    },
+    "red_team": {
+      "repository": null,
+      "revision": null,
+      "status": "MISSING INPUT; obtain actual repository and examined V2 revision"
+    }
+  },
+  "status_meanings": {
+    "RECOMMENDED_FOR_DESIGN": "Use as a design constraint; still verify its actual implementation.",
+    "DEFER_TO_V2_EVIDENCE": "Choose specific retained/replaced components only after the other audits/source trace.",
+    "CONDITIONAL_PILOT": "Enable only for the stated need and supported route; no claim it improves Apex yet."
+  },
+  "decisions": [
+    {
+      "id": "AR-001",
+      "title": "Release includes required runtime configuration",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-001",
+      "design_dependencies": [],
+      "live_test_ids": [
+        "T01",
+        "T02",
+        "T07",
+        "T15"
+      ],
+      "open_question_ids": [
+        "Q06",
+        "Q07"
+      ],
+      "final_refinement": "Record only required non-secret configuration beyond the repo; do not mirror the whole account."
+    },
+    {
+      "id": "AR-002",
+      "title": "Identify actual native memory before deletion",
+      "disposition": "DEFER_TO_V2_EVIDENCE",
+      "rationale": "research/02-information-architecture.md#ar-002",
+      "design_dependencies": [
+        "AR-001"
+      ],
+      "live_test_ids": [
+        "T03"
+      ],
+      "open_question_ids": [
+        "Q02",
+        "Q03"
+      ],
+      "final_refinement": "Trace storage, writers and copies; the name team memory is not evidence of an extra engine."
+    },
+    {
+      "id": "AR-003",
+      "title": "Canonical owners with traceable projections",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-003",
+      "design_dependencies": [],
+      "live_test_ids": [
+        "T03",
+        "T09"
+      ],
+      "open_question_ids": [
+        "Q02"
+      ],
+      "final_refinement": "A source can have useful scoped copies; avoid competing writable authorities."
+    },
+    {
+      "id": "AR-004",
+      "title": "Correction and concurrent memory use",
+      "disposition": "DEFER_TO_V2_EVIDENCE",
+      "rationale": "research/02-information-architecture.md#ar-004",
+      "design_dependencies": [
+        "AR-002",
+        "AR-003"
+      ],
+      "live_test_ids": [
+        "T03",
+        "T10"
+      ],
+      "open_question_ids": [
+        "Q03"
+      ],
+      "final_refinement": "Use native behavior first; narrow a failing write path only when evidence requires it."
+    },
+    {
+      "id": "AR-005",
+      "title": "Volatile facts and task effects are not durable-memory truth",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-005",
+      "design_dependencies": [
+        "AR-003"
+      ],
+      "live_test_ids": [
+        "T08",
+        "T10"
+      ],
+      "open_question_ids": [
+        "Q05"
+      ],
+      "final_refinement": "Use authoritative current state and bounded recovery context rather than a second task ledger."
+    },
+    {
+      "id": "AR-006",
+      "title": "Separate instruction purpose and activation",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-006",
+      "design_dependencies": [
+        "AR-001",
+        "AR-003"
+      ],
+      "live_test_ids": [
+        "T01",
+        "T09"
+      ],
+      "open_question_ids": [
+        "Q07"
+      ],
+      "final_refinement": "Specify consumer, trigger and expected behavior before writing the final backend files."
+    },
+    {
+      "id": "AR-007",
+      "title": "Context efficiency preserves promised source coverage",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-007",
+      "design_dependencies": [
+        "AR-006"
+      ],
+      "live_test_ids": [
+        "T14"
+      ],
+      "open_question_ids": [],
+      "final_refinement": "Do not substitute file counts or snippets for a promised full content review."
+    },
+    {
+      "id": "AR-008",
+      "title": "Native coordination with complete required-result accounting",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-008",
+      "design_dependencies": [
+        "AR-006"
+      ],
+      "live_test_ids": [
+        "T04"
+      ],
+      "open_question_ids": [
+        "Q01"
+      ],
+      "final_refinement": "Final refinement: missing required worker output stays partial/failed, not all-clear."
+    },
+    {
+      "id": "AR-009",
+      "title": "Preserve skills and verify distribution/invocation",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-009",
+      "design_dependencies": [
+        "AR-001",
+        "AR-006"
+      ],
+      "live_test_ids": [
+        "T01",
+        "T11"
+      ],
+      "open_question_ids": [
+        "Q06"
+      ],
+      "final_refinement": "Copy justified working assets and dependencies; do not re-audit all business skill prose."
+    },
+    {
+      "id": "AR-010",
+      "title": "Retain justified bounded controls",
+      "disposition": "DEFER_TO_V2_EVIDENCE",
+      "rationale": "research/02-information-architecture.md#ar-010",
+      "design_dependencies": [
+        "AR-001"
+      ],
+      "live_test_ids": [
+        "T02",
+        "T12"
+      ],
+      "open_question_ids": [
+        "Q08"
+      ],
+      "final_refinement": "Classify advisory, integrity and authorization roles before retaining or removing a hook."
+    },
+    {
+      "id": "AR-011",
+      "title": "Creative autonomy and external-action authority are separate",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-011",
+      "design_dependencies": [
+        "AR-001",
+        "AR-010"
+      ],
+      "live_test_ids": [
+        "T06"
+      ],
+      "open_question_ids": [
+        "Q04"
+      ],
+      "final_refinement": "Final refinement: stop/recovery must cover the actual effect path, not a cosmetic setting."
+    },
+    {
+      "id": "AR-012",
+      "title": "Native routines with explicit outcomes and recovery",
+      "disposition": "CONDITIONAL_PILOT",
+      "rationale": "research/02-information-architecture.md#ar-012",
+      "design_dependencies": [
+        "AR-005",
+        "AR-009",
+        "AR-011"
+      ],
+      "live_test_ids": [
+        "T08"
+      ],
+      "open_question_ids": [
+        "Q05"
+      ],
+      "final_refinement": "Enable consequential unattended work only after its authority, duplicates and stopping are understood."
+    },
+    {
+      "id": "AR-013",
+      "title": "External history memory only for a demonstrated gap",
+      "disposition": "CONDITIONAL_PILOT",
+      "rationale": "research/02-information-architecture.md#ar-013",
+      "design_dependencies": [
+        "AR-002",
+        "AR-004"
+      ],
+      "live_test_ids": [
+        "T07",
+        "T13"
+      ],
+      "open_question_ids": [
+        "Q06",
+        "Q09"
+      ],
+      "final_refinement": "No default external engine; compare the smallest supported history/recovery solution."
+    },
+    {
+      "id": "AR-014",
+      "title": "Output offloading evaluated independently",
+      "disposition": "CONDITIONAL_PILOT",
+      "rationale": "research/02-information-architecture.md#ar-014",
+      "design_dependencies": [
+        "AR-007",
+        "AR-009"
+      ],
+      "live_test_ids": [
+        "T13",
+        "T14"
+      ],
+      "open_question_ids": [
+        "Q06"
+      ],
+      "final_refinement": "MCP-only and full routing plugin are different interventions; exact evidence must survive."
+    },
+    {
+      "id": "AR-015",
+      "title": "Role-separated effort comparison",
+      "disposition": "CONDITIONAL_PILOT",
+      "rationale": "research/02-information-architecture.md#ar-015",
+      "design_dependencies": [
+        "AR-001"
+      ],
+      "live_test_ids": [
+        "T05"
+      ],
+      "open_question_ids": [
+        "Q07"
+      ],
+      "final_refinement": "Pilot higher coordinator effort with ordinary workers unchanged; deep-worker effort is a separate comparison."
+    },
+    {
+      "id": "AR-016",
+      "title": "Selective reversible migration",
+      "disposition": "DEFER_TO_V2_EVIDENCE",
+      "rationale": "research/02-information-architecture.md#ar-016",
+      "design_dependencies": [
+        "AR-001",
+        "AR-002",
+        "AR-009",
+        "AR-010",
+        "AR-011"
+      ],
+      "live_test_ids": [
+        "T07",
+        "T15"
+      ],
+      "open_question_ids": [
+        "Q07",
+        "Q08"
+      ],
+      "final_refinement": "Final refinement: distinguish Git state, runtime settings, memory/task state and external effects."
+    },
+    {
+      "id": "AR-017",
+      "title": "Task-specific completion evidence",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-017",
+      "design_dependencies": [
+        "AR-007",
+        "AR-008"
+      ],
+      "live_test_ids": [
+        "T04",
+        "T12",
+        "T14",
+        "T15"
+      ],
+      "open_question_ids": [
+        "Q01"
+      ],
+      "final_refinement": "Produced artifact, checked artifact and confirmed external effect are separate claims."
+    },
+    {
+      "id": "AR-018",
+      "title": "Progressive documentation governance",
+      "disposition": "RECOMMENDED_FOR_DESIGN",
+      "rationale": "research/02-information-architecture.md#ar-018",
+      "design_dependencies": [
+        "AR-003"
+      ],
+      "live_test_ids": [],
+      "open_question_ids": [],
+      "final_refinement": "Mechanical checks are useful within scope; no compulsory governance spine or semantic certification."
+    }
+  ],
+  "baseline_files": {
+    "README.md": {
+      "git_blob_sha": "a7ace4a789941cd80e5066da7abb0fc8209d4fa1",
+      "bytes": 4945
+    },
+    "connection-test.md": {
+      "git_blob_sha": "1f2292e247e29980fa874c212b2bef036b383b31",
+      "bytes": 190
+    },
+    "research/01-evidence.csv": {
+      "git_blob_sha": "9212fba5473fed0f58ca453e822bf4efde5b9305",
+      "bytes": 6491
+    },
+    "research/01-method.md": {
+      "git_blob_sha": "15cbb91277c61a4657368e2f3327d2939fd0c268",
+      "bytes": 9005
+    },
+    "research/01-projects-architecture.md": {
+      "git_blob_sha": "6b0446f9d02cbb1953c0d45f5bef778328cf4315",
+      "bytes": 20631
+    },
+    "research/01-sources.md": {
+      "git_blob_sha": "ad283c94fed0627b47f294602fda0728941b20c7",
+      "bytes": 15276
+    },
+    "research/01-validation-and-handoff.md": {
+      "git_blob_sha": "87485768d58983db1880e37947aa8a1b84fd7413",
+      "bytes": 19404
+    },
+    "research/02-evidence-and-validation.md": {
+      "git_blob_sha": "d79174c2a1e67bc3d2bf4b1dc3f9ca5a6718360b",
+      "bytes": 15912
+    },
+    "research/02-external-tools.md": {
+      "git_blob_sha": "ae2d5deab14eceb669f204257ee55b78b62ed8db",
+      "bytes": 18064
+    },
+    "research/02-information-architecture.md": {
+      "git_blob_sha": "cd8f03c93946f98897d088ff80499d3dcbe76e9d",
+      "bytes": 61498
+    },
+    "research/validation/02-docs-probes.json": {
+      "git_blob_sha": "fca470dd8db9bda2b0635990d6257334b2955117",
+      "bytes": 11350
+    }
+  },
+  "baseline_anchor_evidence": {
+    "research/02-information-architecture.md": [
+      "ar-001",
+      "ar-002",
+      "ar-003",
+      "ar-004",
+      "ar-005",
+      "ar-006",
+      "ar-007",
+      "ar-008",
+      "ar-009",
+      "ar-010",
+      "ar-011",
+      "ar-012",
+      "ar-013",
+      "ar-014",
+      "ar-015",
+      "ar-016",
+      "ar-017",
+      "ar-018"
+    ]
+  },
+  "baseline_anchor_scope": "The eighteen explicit AR anchors were inspected in the full pass-2 report through GitHub. No other historical fragments are certified by metadata mode.",
+  "final_documents": [
+    "README.md",
+    "ARCHITECTURE-RESEARCH-HANDOFF.md",
+    "research/03-operating-model-and-release.md",
+    "research/03-challenge-and-resolution.md",
+    "research/03-sources-and-quality.md"
+  ]
+}
